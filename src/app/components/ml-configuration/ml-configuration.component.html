@@ -1,0 +1,31 @@
+<mat-card class="configuration-card">
+  <mat-card-header>
+    <mat-card-title>Configuración</mat-card-title>
+    <mat-card-subtitle>Ajusta los parámetros de aprendizaje</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <form class="form">
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Iteraciones" value="1000">
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Error máximo" value="0.001">
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Ritmo aprendizaje" value="0.3">
+      </mat-form-field>
+      <mat-form-field class="half-width">
+        <input matInput placeholder="Momentum" value="0.4">
+      </mat-form-field>
+      
+    </form>
+
+  </mat-card-content>
+  <mat-card-actions>
+    <button (click)="actualizar()" mat-raised-button>Actualizar</button>
+    <button (click)="restaurar()" mat-raised-button>Restaurar</button>
+  </mat-card-actions>
+
+</mat-card>

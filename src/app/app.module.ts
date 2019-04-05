@@ -9,16 +9,20 @@ import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
 import {MatGridListModule} from '@angular/material/grid-list'; 
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ModelComponent } from './components/model/model.component';
+import { MlConfigurationComponent } from './components/ml-configuration/ml-configuration.component';
+import { MlTestModelComponent } from './components/app-test-model/ml-test-model.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    ModelComponent
+    ModelComponent,
+    MlConfigurationComponent,
+    MlTestModelComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +33,7 @@ import { ModelComponent } from './components/model/model.component';
     MatButtonModule,
     MatToolbarModule,
     MatGridListModule,
-    MatFormFieldModule
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -54,9 +54,4 @@ export class TextClasifyerService {
   run(text: Data_Text): Data_Label {
     return this.textMLEngine.run(text);
   }
-
-  test(text: string){
-
-  }
-
 }
