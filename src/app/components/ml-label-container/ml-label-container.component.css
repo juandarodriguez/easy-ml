@@ -1,0 +1,18 @@
+.label-card {
+    max-width: 400px;
+    margin-top: 20px;
+    float: left;
+    margin-left: 20px;
+    height: 250px; 
+}
+
+.scrollable-content {
+    height: 150px; 
+    max-width: 200px;
+    overflow-y: auto;
+   
+}
+
+:host /deep/ .mat-list-item-content {
+    padding: 0!important;
+  }

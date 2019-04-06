@@ -1,6 +1,10 @@
 .test-card {
     max-width: 400px;
     margin-top: 20px;
+    float: left;
+    margin-left: 20px;
+    height: 250px;
+    
   }
 
 .full-width {

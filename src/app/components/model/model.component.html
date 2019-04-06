@@ -1,19 +1,24 @@
-<mat-card class="configuration-card">
-    <mat-card-header>
-       Brain
-      </mat-card-header>
-      
-      <mat-card-content>
-       
-          <input  [(ngModel)]="entry" placeholder="Input">
-        
-      </mat-card-content>
-      <mat-card-actions>
-        <button (click)="dale()" mat-raised-button>DALE!</button>
-        <button (click)="run()" mat-raised-button>RUN</button>
-      </mat-card-actions>
-  
-</mat-card>
+<mat-expansion-panel expanded (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Datos para el entrenamiento del modelo
+    </mat-panel-title>
+    <mat-panel-description>
+      {{panelOpenState ? '' : 'abrir para ver/añadir datos'}}
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <button (click)="anadirEtiqueta()" mat-button>+ Añadir etiqueta</button>
+  <mat-divider></mat-divider>
+  <app-ml-label-container></app-ml-label-container>
+</mat-expansion-panel>
 
-<app-ml-configuration></app-ml-configuration>
-<app-ml-testmodel></app-ml-testmodel>
+
+
+<div class="cards">
+
+  <app-ml-configuration></app-ml-configuration>
+
+
+  <app-ml-test-model></app-ml-test-model>
+
+</div>

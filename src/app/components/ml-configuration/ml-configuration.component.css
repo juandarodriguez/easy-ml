@@ -1,6 +1,8 @@
 .configuration-card {
     max-width: 400px;
     margin-top: 20px;
+    float: left;
+    height: 250px;
   }
 
 .half-width {
