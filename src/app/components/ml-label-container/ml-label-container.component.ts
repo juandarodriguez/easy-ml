@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface DialogData {
   animal: string;
@@ -15,6 +15,7 @@ export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
   texts: string[];
+
   name: string;
   animal: string;
 
@@ -50,7 +51,31 @@ export class MlLabelContainerComponent implements OnInit {
   }
 
   addTerm() {
+    const dialogRef = this.dialog.open(MlLabelContainerDialogComponent, {
+      width: '250px',
+      data: { name: this.name, animal: this.animal }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.animal = result;
+      alert(result);
+    });
+  }
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog-overview-example-dialog.html',
+})
+export class MlLabelContainerDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<MlLabelContainerDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

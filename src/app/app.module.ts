@@ -21,7 +21,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { ModelComponent } from './components/model/model.component';
 import { MlConfigurationComponent } from './components/ml-configuration/ml-configuration.component';
 import { MlTestModelComponent } from './components/ml-test-model/ml-test-model.component';
-import { MlLabelContainerComponent } from './components/ml-label-container/ml-label-container.component';
+import { MlLabelContainerComponent, MlLabelContainerDialogComponent } from './components/ml-label-container/ml-label-container.component';
 
 
 @NgModule({
@@ -32,7 +32,11 @@ import { MlLabelContainerComponent } from './components/ml-label-container/ml-la
     MlConfigurationComponent,
     MlTestModelComponent,
     MlLabelContainerComponent,
-    
+    MlLabelContainerDialogComponent
+  ],
+  entryComponents: [
+    MlLabelContainerComponent,
+    MlLabelContainerDialogComponent
   ],
   imports: [
     BrowserModule,
