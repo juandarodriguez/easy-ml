@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
-import { ITextData } from 'src/app/interfaces/interfaces';
+import { ITextData, Data_Label } from 'src/app/interfaces/interfaces';
 import { BagOfWordsService } from 'src/app/services/bag-of-words.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import * as brain from 'brain.js';
 
+type DialogData = Data_Label;
 
 @Component({
   selector: 'app-modelo',
@@ -13,8 +15,11 @@ import * as brain from 'brain.js';
 export class ModelComponent implements OnInit {
 
   entry: string;
+  labels: Set<Data_Label> = new Set();
 
-  constructor(private textClasifyerService: TextClasifyerService,
+  constructor(
+    private textClasifyerService: TextClasifyerService,
+    private dialog: MatDialog, private snackBar: MatSnackBar,
     private bow: BagOfWordsService) {
   }
 
@@ -87,4 +92,66 @@ export class ModelComponent implements OnInit {
     console.log(this.textClasifyerService.run(this.entry));
   }
 
+  addLabel(){
+    const dialogRef = this.dialog.open(MlAddLabelDialogComponent, {
+      width: '250px',
+      data: ""
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.labels.add(result);
+      this.snackBar.open('Añadida la etiqueta',
+      '', {
+        duration: 2000,
+      });
+    });
+  }
+
+  deleteLabel(text: string) {
+    const dialogRef = this.dialog.open(MlDeleteConfirmComponent, {
+      width: '250px',
+      data: text
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.labels.delete(result);
+      this.snackBar.open('Eliminado texto',
+      '', {
+        duration: 2000,
+      });
+      
+    });
+  }
+
+}
+
+
+@Component({
+  templateUrl: 'ml-add-label-dialog.html',
+})
+export class MlAddLabelDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<MlAddLabelDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  templateUrl: 'ml-delete-confirm-dialog.html',
+})
+export class MlDeleteConfirmComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<MlDeleteConfirmComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

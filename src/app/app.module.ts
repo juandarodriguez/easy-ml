@@ -16,12 +16,14 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDividerModule} from '@angular/material/divider'; 
 import {MatListModule} from '@angular/material/list'; 
 import {MatDialogModule} from '@angular/material/dialog'; 
+import {MatTooltipModule} from '@angular/material/tooltip'; 
+import {MatIconModule} from '@angular/material/icon'; 
 
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { ModelComponent } from './components/model/model.component';
+import { ModelComponent, MlAddLabelDialogComponent } from './components/model/model.component';
 import { MlConfigurationComponent } from './components/ml-configuration/ml-configuration.component';
 import { MlTestModelComponent } from './components/ml-test-model/ml-test-model.component';
-import { MlLabelContainerComponent, MlLabelContainerDialogComponent } from './components/ml-label-container/ml-label-container.component';
+import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteConfirmComponent } from './components/ml-label-container/ml-label-container.component';
 
 
 @NgModule({
@@ -32,11 +34,15 @@ import { MlLabelContainerComponent, MlLabelContainerDialogComponent } from './co
     MlConfigurationComponent,
     MlTestModelComponent,
     MlLabelContainerComponent,
-    MlLabelContainerDialogComponent
+    MlLabelContainerDialogComponent,
+    MlDeleteConfirmComponent,
+    MlAddLabelDialogComponent
   ],
   entryComponents: [
     MlLabelContainerComponent,
-    MlLabelContainerDialogComponent
+    MlLabelContainerDialogComponent,
+    MlDeleteConfirmComponent,
+    MlAddLabelDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +59,9 @@ import { MlLabelContainerComponent, MlLabelContainerDialogComponent } from './co
     MatExpansionModule,
     MatDividerModule,
     MatListModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,16 +3,23 @@
     margin-top: 20px;
     float: left;
     margin-left: 20px;
-    height: 250px; 
+    max-width: 250px;
+     
 }
 
 .scrollable-content {
-    height: 150px; 
-    max-width: 200px;
+    height: 200px; 
     overflow-y: auto;
+    
    
 }
 
-:host /deep/ .mat-list-item-content {
-    padding: 0!important;
-  }
+.text-item {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.card-title {
+    font-size: medium;
+}

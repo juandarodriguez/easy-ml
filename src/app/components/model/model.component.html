@@ -7,9 +7,14 @@
       {{panelOpenState ? '' : 'abrir para ver/añadir datos'}}
     </mat-panel-description>
   </mat-expansion-panel-header>
-  <button (click)="anadirEtiqueta()" mat-button>+ Añadir etiqueta</button>
+  <button (click)="addLabel()" mat-button>+ Añadir etiqueta</button>
+  <button mat-button (click)="deleteLabel()" matTooltip="eliminar etiqueta">
+      <mat-icon>label-off</mat-icon>
+  </button>
   <mat-divider></mat-divider>
-  <app-ml-label-container></app-ml-label-container>
+  <app-ml-label-container [label]="'enciende_luz'"></app-ml-label-container>
+  <app-ml-label-container [label]="'apaga_luz'"></app-ml-label-container>
+  <app-ml-label-container [label]="'enciende_ventilador'"></app-ml-label-container>
 </mat-expansion-panel>
 
 

@@ -1,5 +1,6 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject, Input } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { Data_Label, Data_Text } from 'src/app/interfaces/interfaces';
 
 export type DialogData = string;
 
@@ -11,38 +12,39 @@ export type DialogData = string;
 export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
-  texts: string[] = [];
+  texts: Set<Data_Text> = new Set();
+  @Input('label')  label: Data_Label;
 
-  constructor(public dialog: MatDialog) { 
+  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
-    // this.texts = [
-    //   // encender_lampara
-    //   "que me tocan el culo",
-    //   "enciende la luz",
-    //   "esto está muy oscuro",
-    //   "qué oscuridad",
-    //   "dale a la luz",
-    //   "enciende la lámpara",
-    //   "se está poniendo el sol",
-    //   "no veo nada",
-    //   "necesito luz",
-    //   "no hay suficiente luz",
+    this.texts = new Set([
+      // encender_lampara
+      "del salón en el ángulo oscuro de su dueña tal vez olvidada, silenciosa y cubierta de polvo veiase el arpa, cuanta nota dormía en sus cuerdas como lázaro duerme en su cama",
+      "enciende la luz",
+      "esto está muy oscuro",
+      "qué oscuridad",
+      "dale a la luz",
+      "enciende la lámpara",
+      "se está poniendo el sol",
+      "no veo nada",
+      "necesito luz",
+      "no hay suficiente luz",
 
-    //   // apagar_lampara
-    //   "apaga la luz",
-    //   "apaga la lámpara",
-    //   "hay demasiada luz",
-    //   "menos luz",
-    //   "desconecta la luz",
-    //   "quiero estar en la oscuridad",
-    //   "está demasiado claro",
-    //   "mucha claridad",
-    //   "me gusta la oscuridad",
-    //   "prefiero la oscuridad"
+      // apagar_lampara
+      "apaga la luz",
+      "apaga la lámpara",
+      "hay demasiada luz",
+      "menos luz",
+      "desconecta la luz",
+      "quiero estar en la oscuridad",
+      "está demasiado claro",
+      "mucha claridad",
+      "me gusta la oscuridad",
+      "prefiero la oscuridad"
 
-    // ]
+    ]);
   }
 
   addTerm() {
@@ -53,24 +55,59 @@ export class MlLabelContainerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.texts.push(result);
+      this.texts.add(result);
+      this.snackBar.open('Añadido texto',
+      '', {
+        duration: 2000,
+      });
+    });
+  }
+
+  delete(text: string) {
+    const dialogRef = this.dialog.open(MlDeleteConfirmComponent, {
+      width: '250px',
+      data: text
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.texts.delete(result);
+      this.snackBar.open('Eliminado texto',
+      '', {
+        duration: 2000,
+      });
+      
     });
   }
 }
 
 @Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: 'dialog-overview-example-dialog.html',
+  templateUrl: 'ml-label-container-dialog.html',
 })
 export class MlLabelContainerDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<MlLabelContainerDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 }
+
+@Component({
+  templateUrl: 'ml-confirm-dialog.html',
+})
+export class MlDeleteConfirmComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<MlDeleteConfirmComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+
 
