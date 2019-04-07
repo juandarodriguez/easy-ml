@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Data_Label, Data_Text } from 'src/app/interfaces/interfaces';
+import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 
 export type DialogData = string;
 
@@ -14,19 +15,16 @@ export class MlLabelContainerComponent implements OnInit {
   panelOpenState = true;
   texts: Set<Data_Text> = new Set();
   @Input('label') label: Data_Label;
+  @Input('texts') _texts: Data_Text[]
   @Output() onChildDeleted = new EventEmitter<Data_Label>();
 
-  constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
+  constructor(
+    private textClasifyerService: TextClasifyerService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar) {
   }
 
-  ngOnInit() {
-    this.texts = new Set([
-      // encender_lampara
-      "del salón en el ángulo oscuro de su dueña tal vez olvidada, silenciosa y cubierta de polvo veiase el arpa, cuanta nota dormía en sus cuerdas como lázaro duerme en su cama",
-      "enciende la luz",
-      "esto está muy oscuro",
-    ]);
-  }
+  ngOnInit() { }
 
   addTerm() {
     const dialogRef = this.dialog.open(MlLabelContainerDialogComponent, {
@@ -37,10 +35,13 @@ export class MlLabelContainerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.texts.add(result);
+      this.textClasifyerService.addEntry(result, this.label)
       this.snackBar.open('Añadido texto',
         '', {
           duration: 2000,
         });
+
+      console.log(this.textClasifyerService.getModel());
     });
   }
 
@@ -53,10 +54,13 @@ export class MlLabelContainerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.texts.delete(result);
+      this.textClasifyerService.removeEntry(result)
       this.snackBar.open('Eliminado texto',
         '', {
           duration: 2000,
         });
+
+      console.log(this.textClasifyerService.getModel());
 
     });
   }
@@ -76,6 +80,7 @@ export class MlLabelContainerComponent implements OnInit {
           duration: 2000,
         });
 
+      console.log(this.textClasifyerService.getModel());
     });
   }
 

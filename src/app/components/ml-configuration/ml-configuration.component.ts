@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ITextModel } from 'src/app/interfaces/interfaces';
+import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 
 @Component({
   selector: 'app-ml-configuration',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MlConfigurationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private textClasifyerService: TextClasifyerService) { }
 
   ngOnInit() {
+  }
+
+  update(){
+    this.textClasifyerService.train();
   }
 
 }

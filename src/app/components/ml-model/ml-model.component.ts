@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
-import { ITextData, Data_Label } from 'src/app/interfaces/interfaces';
+import { ITextData, Data_Label, ITextModel, State } from 'src/app/interfaces/interfaces';
 import { BagOfWordsService } from 'src/app/services/bag-of-words.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import * as brain from 'brain.js';
@@ -20,8 +20,7 @@ export class MlModelComponent implements OnInit {
   constructor(
     private textClasifyerService: TextClasifyerService,
     private dialog: MatDialog, private snackBar: MatSnackBar,
-    private bow: BagOfWordsService) {
-  }
+    private bow: BagOfWordsService) { }
 
   ngOnInit() { }
 
@@ -110,6 +109,7 @@ export class MlModelComponent implements OnInit {
 
   onDeleted($event){
     this.labels.delete($event);
+    this.textClasifyerService.removeLabel($event);
   }
 
 }

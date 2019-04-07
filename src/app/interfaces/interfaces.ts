@@ -9,7 +9,6 @@ export type Data_Text = string
 
 export interface ITextModel {
     name: string,
-    labels: Set<Data_Label>,
     data: Set<ITextData>,
     state: State
 }

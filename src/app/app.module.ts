@@ -24,6 +24,7 @@ import { MlModelComponent, MlAddLabelDialogComponent } from './components/ml-mod
 import { MlConfigurationComponent } from './components/ml-configuration/ml-configuration.component';
 import { MlTestModelComponent } from './components/ml-test-model/ml-test-model.component';
 import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteConfirmComponent } from './components/ml-label-container/ml-label-container.component';
+import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-toolbar.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteCon
     MlLabelContainerComponent,
     MlLabelContainerDialogComponent,
     MlDeleteConfirmComponent,
-    MlAddLabelDialogComponent
+    MlAddLabelDialogComponent,
+    MlModelToolbarComponent
   ],
   entryComponents: [
     MlLabelContainerComponent,
