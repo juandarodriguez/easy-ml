@@ -20,7 +20,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatIconModule} from '@angular/material/icon'; 
 
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { ModelComponent, MlAddLabelDialogComponent } from './components/model/model.component';
+import { MlModelComponent, MlAddLabelDialogComponent } from './components/ml-model/ml-model.component';
 import { MlConfigurationComponent } from './components/ml-configuration/ml-configuration.component';
 import { MlTestModelComponent } from './components/ml-test-model/ml-test-model.component';
 import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteConfirmComponent } from './components/ml-label-container/ml-label-container.component';
@@ -30,7 +30,7 @@ import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteCon
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    ModelComponent,
+    MlModelComponent,
     MlConfigurationComponent,
     MlTestModelComponent,
     MlLabelContainerComponent,

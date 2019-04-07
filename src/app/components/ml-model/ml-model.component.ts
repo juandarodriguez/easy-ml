@@ -8,11 +8,11 @@ import * as brain from 'brain.js';
 type DialogData = Data_Label;
 
 @Component({
-  selector: 'app-modelo',
-  templateUrl: './model.component.html',
-  styleUrls: ['./model.component.css']
+  selector: 'app-ml-modelo',
+  templateUrl: './ml-model.component.html',
+  styleUrls: ['./ml-model.component.css']
 })
-export class ModelComponent implements OnInit {
+export class MlModelComponent implements OnInit {
 
   entry: string;
   labels: Set<Data_Label> = new Set();
