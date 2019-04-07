@@ -108,21 +108,8 @@ export class ModelComponent implements OnInit {
     });
   }
 
-  deleteLabel(text: string) {
-    const dialogRef = this.dialog.open(MlDeleteConfirmComponent, {
-      width: '250px',
-      data: text
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.labels.delete(result);
-      this.snackBar.open('Eliminado texto',
-      '', {
-        duration: 2000,
-      });
-      
-    });
+  onDeleted($event){
+    this.labels.delete($event);
   }
 
 }
@@ -135,20 +122,6 @@ export class MlAddLabelDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<MlAddLabelDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  templateUrl: 'ml-delete-confirm-dialog.html',
-})
-export class MlDeleteConfirmComponent {
-
-  constructor(
-    public dialogRef: MatDialogRef<MlDeleteConfirmComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   onNoClick(): void {

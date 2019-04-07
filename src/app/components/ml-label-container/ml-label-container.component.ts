@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Data_Label, Data_Text } from 'src/app/interfaces/interfaces';
 
@@ -13,7 +13,8 @@ export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
   texts: Set<Data_Text> = new Set();
-  @Input('label')  label: Data_Label;
+  @Input('label') label: Data_Label;
+  @Output() onChildDeleted = new EventEmitter<Data_Label>();
 
   constructor(private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
@@ -24,26 +25,6 @@ export class MlLabelContainerComponent implements OnInit {
       "del salón en el ángulo oscuro de su dueña tal vez olvidada, silenciosa y cubierta de polvo veiase el arpa, cuanta nota dormía en sus cuerdas como lázaro duerme en su cama",
       "enciende la luz",
       "esto está muy oscuro",
-      "qué oscuridad",
-      "dale a la luz",
-      "enciende la lámpara",
-      "se está poniendo el sol",
-      "no veo nada",
-      "necesito luz",
-      "no hay suficiente luz",
-
-      // apagar_lampara
-      "apaga la luz",
-      "apaga la lámpara",
-      "hay demasiada luz",
-      "menos luz",
-      "desconecta la luz",
-      "quiero estar en la oscuridad",
-      "está demasiado claro",
-      "mucha claridad",
-      "me gusta la oscuridad",
-      "prefiero la oscuridad"
-
     ]);
   }
 
@@ -57,9 +38,9 @@ export class MlLabelContainerComponent implements OnInit {
       console.log('The dialog was closed');
       this.texts.add(result);
       this.snackBar.open('Añadido texto',
-      '', {
-        duration: 2000,
-      });
+        '', {
+          duration: 2000,
+        });
     });
   }
 
@@ -73,12 +54,32 @@ export class MlLabelContainerComponent implements OnInit {
       console.log('The dialog was closed');
       this.texts.delete(result);
       this.snackBar.open('Eliminado texto',
-      '', {
-        duration: 2000,
-      });
-      
+        '', {
+          duration: 2000,
+        });
+
     });
   }
+
+  deleteLabel() {
+    const dialogRef = this.dialog.open(MlDeleteConfirmComponent, {
+      width: '250px',
+      data: this.label
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.onChildDeleted.emit(result);
+
+      this.snackBar.open('Eliminada la etiqueta',
+        this.label, {
+          duration: 2000,
+        });
+
+    });
+  }
+
+
 }
 
 @Component({
