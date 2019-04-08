@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ITextModel } from 'src/app/interfaces/interfaces';
-import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
+import { IConfiguration, ITextModel } from 'src/app/interfaces/interfaces';
+import { TextClasifyerService, configDefault } from 'src/app/services/text-clasifyer.service';
 
 @Component({
   selector: 'app-ml-configuration',
@@ -9,13 +9,35 @@ import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 })
 export class MlConfigurationComponent implements OnInit {
 
-  constructor(private textClasifyerService: TextClasifyerService) { }
+  config: IConfiguration;
+  model: ITextModel;
+
+  jsonCopy(src) {
+    return JSON.parse(JSON.stringify(src));
+  }
+
+  constructor(private textClasifyerService: TextClasifyerService) { 
+    this.config = this.jsonCopy(configDefault);
+    this.model = textClasifyerService.getModel();
+  }
 
   ngOnInit() {
   }
 
-  update(){
-    this.textClasifyerService.train();
+  update() {
+    this.textClasifyerService.configure(this.config);
+    this.textClasifyerService.train().subscribe(r => {
+      let mensaje = `Modelo entrenado con los nuevos parámetros.
+      Error cometido: ${r.error}
+      Iteraciones: ${r.iterations}`
+      alert(mensaje);
+    });
+  }
+
+  reset(){
+    this.config = this.jsonCopy(configDefault);
+    
+    this.textClasifyerService.configure(this.config);
   }
 
 }

@@ -1,15 +1,16 @@
 export enum State {
-    UNTRAINED,
-    TRAINED,
-    OUTDATED
+    UNTRAINED = "UNTRAINED",
+    TRAINED = "TRAINED",
+    OUTDATED = "OUTDATED",
+    EMPTY = "EMPTY"
 }
 
 export type Data_Label = string
 export type Data_Text = string
 
 export interface ITextModel {
-    name: string,
-    labels: Map<Data_Label, Set<Data_Text>>,
+    name?: string,
+    labels?: Map<Data_Label, Set<Data_Text>>,
     state: State
 }
 
@@ -18,11 +19,27 @@ export interface ITextData {
     label: Data_Label
 }
 
+export enum Activation_Functions {
+    SIGMOID = 'sigmoid',
+    RELU = 'relu',
+    LEAKY_RELU = 'leaky-relu', 
+    TANH =  'tanh'
+}
+
 export interface IConfiguration {
-    iterations: number,      // the maximum times to iterate the training data --> number greater than 0
-    errorThresh: number,     // the acceptable error percentage from training data --> number between 0 and 1
-    learningRate: number,    // scales with delta to effect training rate --> number between 0 and 1
-    momentum: number        // scales with next layer's change value --> number between 0 and 1
+
+    binaryThresh?: number,             // ¯\_(ツ)_/¯
+    hiddenLayers?: number[],           // array of ints for the sizes of the hidden layers in the network
+    activation?: Activation_Functions, // Supported activation types ['sigmoid', 'relu', 'leaky-relu', 'tanh']◊
+
+    iterations?: number,               // the maximum times to iterate the training data
+    errorThresh?: number,              // the acceptable error percentage from training data
+    log?: boolean,                     // true to use console.log, when a function is supplied it is used
+    logPeriod?: number,                // iterations between logging out
+    learningRate?: number,             // multiply's against the input and the delta then adds to momentum
+    momentum?: number,                 // multiply's against the specified "change" then adds to learning rate for change
+    callback?: null,                   // a periodic call back that can be triggered while training
+    callbackPeriod?: number,           // the number of iterations through the training data between callback calls
 }
 
 export interface IEngine {

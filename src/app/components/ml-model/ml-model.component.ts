@@ -14,8 +14,10 @@ type DialogData = Data_Label;
 export class MlModelComponent implements OnInit {
 
   entry: string;
+  model: ITextModel
   labels = new Set<Data_Label>();
   texts = new Map<Data_Label, Set<Data_Text>>();
+ 
   
   constructor(
     private textClasifyerService: TextClasifyerService,
@@ -23,18 +25,24 @@ export class MlModelComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.model = this.textClasifyerService.getModel();
   }
 
   loadModel(){
     this.textClasifyerService.load("kuku").subscribe(model => {
+      this.model = model;
       this.labels = new Set(model.labels.keys());
       this.texts = model.labels;
     });
   }
 
   trainModel(){
-    this.textClasifyerService.train();
+    this.textClasifyerService.train().subscribe( r => {
+      let mensaje = `Modelo entrenado.
+      Error cometido: ${r.error}
+      Iteraciones: ${r.iterations}`
+      alert(mensaje);
+    });
   }
 
   run() {

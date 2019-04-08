@@ -1,8 +1,18 @@
-import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ITextModel, State, IConfiguration, Data_Text, Data_Label, ITextData } from '../interfaces/interfaces';
 import { TextBrainMLService } from './text-brain-ml.service';
 import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
+
+export let configDefault: IConfiguration = {
+  iterations: 3000, // the maximum times to iterate the training data
+  errorThresh: 0.006, // the acceptable error percentage from training data
+  log: true, // true to use console.log, when a function is supplied it is used
+  logPeriod: 10, // iterations between logging out
+  learningRate: 0.3, // multiply's against the input and the delta then adds to momentum
+  momentum: 0.1, // multiply's against the specified "change" then adds to learning rate for change
+};
 
 @Injectable({
   providedIn: 'root'
@@ -10,20 +20,30 @@ import { Observable, of } from 'rxjs';
 export class TextClasifyerService {
 
   private model: ITextModel;
+  private configuration: IConfiguration = configDefault;
 
   constructor(private textMLEngine: TextBrainMLService) {
     this.model = {
       name: null,
       labels: new Map<Data_Label, Set<Data_Text>>(),
-      state: State.UNTRAINED
+      state: State.EMPTY
     }
+    this.textMLEngine.configure(this.configuration);
+  }
+
+  getConfiguration(): IConfiguration {
+    return this.configuration;
   }
 
   configure(config: IConfiguration) {
     this.textMLEngine.configure(config);
-    if (this.model.state != State.UNTRAINED) {
+    if (this.model.state == State.TRAINED) {
       this.model.state = State.OUTDATED;
     }
+  }
+
+  getState() {
+    return this.model.state;
   }
 
   setName(name: string) {
@@ -92,7 +112,7 @@ export class TextClasifyerService {
       "me estoy quedando pajarito"
     ]));
 
-    this.model.state == State.UNTRAINED;
+    this.model.state = State.UNTRAINED;
 
     return of(this.model);
 
@@ -101,9 +121,9 @@ export class TextClasifyerService {
   save(name?: string) {
     let modelObject = {};
 
-    for(let label of this.model.labels.keys()){
+    for (let label of this.model.labels.keys()) {
       modelObject[label] = [];
-      for(let text of this.model.labels.get(label)){
+      for (let text of this.model.labels.get(label)) {
         modelObject[label].push(text);
       }
     }
@@ -117,7 +137,7 @@ export class TextClasifyerService {
 
   addEntry(data: ITextData) {
     this.model.labels.set(data.label, this.model.labels.get(data.label).add(data.text));
-    if (this.model.state != State.UNTRAINED) {
+    if (this.model.state == State.TRAINED) {
       this.model.state = State.OUTDATED;
     }
   }
@@ -126,31 +146,36 @@ export class TextClasifyerService {
     for (let d of data) {
       this.addEntry(d);
     }
-    if (this.model.state != State.UNTRAINED) {
+    if (this.model.state == State.TRAINED) {
       this.model.state = State.OUTDATED;
     }
   }
 
   removeLabel(label: Data_Label) {
     this.model.labels.delete(label);
-    if (this.model.labels.get(label).entries.length != 0) {
-      if (this.model.state != State.UNTRAINED) {
-        this.model.state = State.OUTDATED;
-      }
+    if (this.model.state == State.TRAINED) {
+      this.model.state = State.OUTDATED;
     }
+
   }
 
   removeEntry(data: ITextData) {
     this.model.labels.get(data.label).delete(data.text);
-    if (this.model.state != State.UNTRAINED) {
+    if (this.model.state == State.TRAINED) {
       this.model.state = State.OUTDATED;
     }
   }
 
-  train() {
+  train(): Observable<any> {
     if (this.model.state == State.OUTDATED || this.model.state == State.UNTRAINED) {
-      this.textMLEngine.train(this.model);
-      this.model.state = State.TRAINED;
+      return this.textMLEngine.train(this.model).pipe(
+        map(response => {
+          this.model.state = State.TRAINED;
+          return response;
+        })
+      )
+    } else {
+      return of(false);
     }
   }
 

@@ -79,9 +79,10 @@ export class MlLabelContainerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      this.textClasifyerService.removeLabel(result);
       this.onChildDeleted.emit(result);
 
-      this.snackBar.open('Eliminada la etiqueta',
+      this.snackBar.open('Eliminada la etiqueta ' + result,
         this.label, {
           duration: 2000,
         });

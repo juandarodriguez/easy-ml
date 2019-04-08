@@ -8,23 +8,24 @@
 
     <form class="form">
       <mat-form-field class="half-width">
-        <input matInput placeholder="Iteraciones" value="1000">
+        <input type="number" name="iterations" [(ngModel)]="config.iterations" matInput placeholder="Iteraciones">
       </mat-form-field>
       <mat-form-field class="half-width">
-        <input matInput placeholder="Error máximo" value="0.001">
+        <input type="number" name="errorThresh" [(ngModel)]="config.errorThresh" matInput placeholder="Error máximo">
       </mat-form-field>
       <mat-form-field class="half-width">
-        <input matInput placeholder="Ritmo aprendizaje" value="0.3">
+        <input type="number" name="learningRate" [(ngModel)]="config.learningRate" matInput placeholder="Ritmo aprendizaje">
       </mat-form-field>
       <mat-form-field class="half-width">
-        <input matInput placeholder="Momentum" value="0.4">
+        <input type="number" name="momentum" [(ngModel)]="config.momentum" matInput placeholder="Momentum">
       </mat-form-field>
       
     </form>
 
   </mat-card-content>
+
   <mat-card-actions>
-    <button (click)="update()" mat-raised-button>Actualizar</button>
+    <button [disabled]="model.state == 'EMPTY'" (click)="update()" mat-raised-button>Actualizar</button>
     <button (click)="reset()" mat-raised-button>Restaurar</button>
   </mat-card-actions>
 

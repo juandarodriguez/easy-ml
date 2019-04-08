@@ -18,6 +18,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatDialogModule} from '@angular/material/dialog'; 
 import {MatTooltipModule} from '@angular/material/tooltip'; 
 import {MatIconModule} from '@angular/material/icon'; 
+import {MatChipsModule} from '@angular/material/chips'; 
 
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MlModelComponent, MlAddLabelDialogComponent } from './components/ml-model/ml-model.component';
@@ -63,7 +64,8 @@ import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-
     MatListModule,
     MatDialogModule,
     MatTooltipModule,
-    MatIconModule
+    MatIconModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

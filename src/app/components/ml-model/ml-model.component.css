@@ -3,3 +3,7 @@
     justify-content: space-between;
     align-content: stretch;
  }
+
+ .card {
+     margin: 10px;
+ }
