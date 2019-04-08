@@ -99,6 +99,15 @@ export class TextClasifyerService {
   }
 
   save(name?: string) {
+    let modelObject = {};
+
+    for(let label of this.model.labels.keys()){
+      modelObject[label] = [];
+      for(let text of this.model.labels.get(label)){
+        modelObject[label].push(text);
+      }
+    }
+    let modelJSON = JSON.stringify(modelObject);
 
   }
 
