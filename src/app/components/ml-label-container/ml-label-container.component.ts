@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { Data_Label, Data_Text } from 'src/app/interfaces/interfaces';
+import { Data_Label, Data_Text, ITextModel } from 'src/app/interfaces/interfaces';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 
 export type DialogData = string;

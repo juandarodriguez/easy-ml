@@ -19,6 +19,8 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip'; 
 import {MatIconModule} from '@angular/material/icon'; 
 import {MatChipsModule} from '@angular/material/chips'; 
+import {MatProgressBarModule} from '@angular/material/progress-bar'; 
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MlModelComponent, MlAddLabelDialogComponent } from './components/ml-model/ml-model.component';
@@ -65,7 +67,9 @@ import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-
     MatDialogModule,
     MatTooltipModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

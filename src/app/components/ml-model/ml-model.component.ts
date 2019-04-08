@@ -17,8 +17,9 @@ export class MlModelComponent implements OnInit {
   model: ITextModel
   labels = new Set<Data_Label>();
   texts = new Map<Data_Label, Set<Data_Text>>();
- 
-  
+  training = false;
+
+
   constructor(
     private textClasifyerService: TextClasifyerService,
     private dialog: MatDialog, private snackBar: MatSnackBar) {
@@ -28,7 +29,7 @@ export class MlModelComponent implements OnInit {
     this.model = this.textClasifyerService.getModel();
   }
 
-  loadModel(){
+  loadModel() {
     this.textClasifyerService.load("kuku").subscribe(model => {
       this.model = model;
       this.labels = new Set(model.labels.keys());
@@ -36,13 +37,19 @@ export class MlModelComponent implements OnInit {
     });
   }
 
-  trainModel(){
-    this.textClasifyerService.train().subscribe( r => {
-      let mensaje = `Modelo entrenado.
-      Error cometido: ${r.error}
-      Iteraciones: ${r.iterations}`
-      alert(mensaje);
-    });
+  trainModel() {
+    this.training = true;
+    setTimeout(() => {
+      this.textClasifyerService.train().subscribe(r => {
+
+        let mensaje = `Modelo entrenado.
+        Error cometido: ${r.error}
+        Iteraciones: ${r.iterations}`
+        alert(mensaje);
+        this.training = false;
+      });
+    }, 100)
+
   }
 
   run() {

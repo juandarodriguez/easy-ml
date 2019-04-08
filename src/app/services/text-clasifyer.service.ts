@@ -139,6 +139,8 @@ export class TextClasifyerService {
     this.model.labels.set(data.label, this.model.labels.get(data.label).add(data.text));
     if (this.model.state == State.TRAINED) {
       this.model.state = State.OUTDATED;
+    }else if(this.model.state == State.EMPTY){
+      this.model.state = State.UNTRAINED;
     }
   }
 
