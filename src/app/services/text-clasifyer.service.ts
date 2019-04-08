@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
 import { ITextModel, State, IConfiguration, Data_Text, Data_Label, ITextData } from '../interfaces/interfaces';
 import { TextBrainMLService } from './text-brain-ml.service';
-import { trigger } from '@angular/animations';
+import { Observable, of } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,114 +11,145 @@ export class TextClasifyerService {
 
   private model: ITextModel;
 
-  constructor(private textMLEngine: TextBrainMLService) { 
+  constructor(private textMLEngine: TextBrainMLService) {
     this.model = {
-      name: name,
-      data: new Set<ITextData>(),
+      name: null,
+      labels: new Map<Data_Label, Set<Data_Text>>(),
       state: State.UNTRAINED
     }
   }
 
-  configure(config: IConfiguration){
-      this.textMLEngine.configure(config);
-  }
-
-  setName(name: string){
-    this.model.name = name;
-  }
-
-  load(name: string){
-    this.model = {
-      name: 'el modelo',
-      data: new Set<ITextData>(
-        [
-          { text: "que me tocan el culo ", label: "encender_lampara" },
-          { text: "enciende la luz", label: "encender_lampara" },
-          { text: "esto está muy oscuro", label: "encender_lampara" },
-          { text: "qué oscuridad", label: "encender_lampara" },
-          { text: "dale a la luz", label: "encender_lampara" },
-          { text: "enciende la lámpara", label: "encender_lampara" },
-          { text: "se está poniendo el sol", label: "encender_lampara" },
-          { text: "no veo nada", label: "encender_lampara" },
-          { text: "necesito luz", label: "encender_lampara" },
-          { text: "no hay suficiente luz", label: "encender_lampara" },
-  
-          { text: "apaga la luz", label: "apagar_lampara" },
-          { text: "apaga la lámpara", label: "apagar_lampara" },
-          { text: "hay demasiada luz", label: "apagar_lampara" },
-          { text: "menos luz", label: "apagar_lampara" },
-          { text: "desconecta la luz", label: "apagar_lampara" },
-          { text: "quiero estar en la oscuridad", label: "apagar_lampara" },
-          { text: "está demasiado claro", label: "apagar_lampara" },
-          { text: "mucha claridad", label: "apagar_lampara" },
-          { text: "me gusta la oscuridad", label: "apagar_lampara" },
-          { text: "prefiero la oscuridad", label: "apagar_lampara" },
-          { text: "veo muy bien", label: "apagar_lampara" },
-          
-          { text: "qué sofocón", label: "encender_ventilador" },
-          { text: "enciende el ventilador", label: "encender_ventilador" },
-          { text: "hace mucho calor", label: "encender_ventilador" },
-          { text: "demasiado calor", label: "encender_ventilador" },
-          { text: "pon en marcha el ventilador", label: "encender_ventilador" },
-          { text: "qué calor", label: "encender_ventilador" },
-          { text: "conecta el ventilador", label: "encender_ventilador" },
-          { text: "me afixio", label: "encender_ventilador" },
-          { text: "me derrito", label: "encender_ventilador" },
-          { text: "dale caña al ventilador", label: "encender_ventilador" },
-          { text: "que bochorno", label: "encender_ventilador" },
-          { text: "me abraso", label: "encender_ventilador" },
-          { text: "que calor tan sofocante", label: "encender_ventilador" },
-          
-          { text: "estoy arrecío", label: "apagar_ventilador" },
-          { text: "qué frío", label: "apagar_ventilador" },
-          { text: "apaga el ventilador", label: "apagar_ventilador" },
-          { text: "hace mucho viento", label: "apagar_ventilador" },
-          { text: "hace mucho frío", label: "apagar_ventilador" },
-          { text: "demasiado frío", label: "apagar_ventilador" },
-          { text: "quita el ventilador", label: "apagar_ventilador" },
-          { text: "me congelo", label: "apagar_ventilador" },
-          { text: "me voy a resfriar", label: "apagar_ventilador" },
-          { text: "hay mucha corriente", label: "apagar_ventilador" },
-          { text: "tengo la carne de gallina", label: "apagar_ventilador" },
-          { text: "me estoy quedando pajarito", label: "apagar_ventilador" },
-        ]),
-        state: State.UNTRAINED
+  configure(config: IConfiguration) {
+    this.textMLEngine.configure(config);
+    if (this.model.state != State.UNTRAINED) {
+      this.model.state = State.OUTDATED;
     }
   }
 
-  save(name?: string){
-  
+  setName(name: string) {
+    this.model.name = name;
   }
 
-  addEntry(text: Data_Text, label: Data_Label){
-    this.model.data.add({text, label})
+  load(name: string): Observable<ITextModel> {
+
+    this.model.name = name;
+
+    this.model.labels.set('encender_lampara', new Set([
+      "que me tocan el culo ",
+      "enciende la luz",
+      "esto está muy oscuro",
+      "qué oscuridad",
+      "dale a la luz",
+      "enciende la lámpara",
+      "se está poniendo el sol",
+      "no veo nada",
+      "necesito luz",
+      "no hay suficiente luz"
+    ]));
+
+    this.model.labels.set('apagar_lampara', new Set([
+      "apaga la luz",
+      "apaga la lámpara",
+      "hay demasiada luz",
+      "menos luz",
+      "desconecta la luz",
+      "quiero estar en la oscuridad",
+      "está demasiado claro",
+      "mucha claridad",
+      "me gusta la oscuridad",
+      "prefiero la oscuridad",
+      "veo muy bien"
+    ]));
+
+    this.model.labels.set('encender_ventilador', new Set([
+      "qué sofocón",
+      "enciende el ventilador",
+      "hace mucho calor",
+      "demasiado calor",
+      "pon en marcha el ventilador",
+      "qué calor",
+      "conecta el ventilador",
+      "me afixio",
+      "me derrito",
+      "dale caña al ventilador",
+      "que bochorno",
+      "me abraso",
+      "que calor tan sofocante"
+    ]));
+
+    this.model.labels.set('apagar_ventilador', new Set([
+      "estoy arrecío",
+      "qué frío",
+      "apaga el ventilador",
+      "hace mucho viento",
+      "hace mucho frío",
+      "demasiado frío",
+      "quita el ventilador",
+      "me congelo",
+      "me voy a resfriar",
+      "hay mucha corriente",
+      "tengo la carne de gallina",
+      "me estoy quedando pajarito"
+    ]));
+
+    this.model.state == State.UNTRAINED;
+
+    return of(this.model);
+
   }
 
-  addEntries(data: Set<ITextData>){
-    this.model.data = new Set([...this.model.data, ...data]);
+  save(name?: string) {
+
   }
 
-  removeLabel(label: Data_Label){ 
-      this.model.data.forEach(e => {
-        if(e.label == label){
-          this.model.data.delete(e)
-        }
-      })
+  addLabel(label: Data_Label) {
+    this.model.labels.set(label, new Set<Data_Text>());
   }
 
-  removeEntry(entry: ITextData){
-    this.model.data.delete(entry);
+  addEntry(data: ITextData) {
+    this.model.labels.set(data.label, this.model.labels.get(data.label).add(data.text));
+    if (this.model.state != State.UNTRAINED) {
+      this.model.state = State.OUTDATED;
+    }
   }
 
-  train(){
-    this.textMLEngine.train(this.model.data)
+  addEntries(data: Set<ITextData>) {
+    for (let d of data) {
+      this.addEntry(d);
+    }
+    if (this.model.state != State.UNTRAINED) {
+      this.model.state = State.OUTDATED;
+    }
+  }
+
+  removeLabel(label: Data_Label) {
+    this.model.labels.delete(label);
+    if (this.model.labels.get(label).entries.length != 0) {
+      if (this.model.state != State.UNTRAINED) {
+        this.model.state = State.OUTDATED;
+      }
+    }
+  }
+
+  removeEntry(data: ITextData) {
+    this.model.labels.get(data.label).delete(data.text);
+    if (this.model.state != State.UNTRAINED) {
+      this.model.state = State.OUTDATED;
+    }
+  }
+
+  train() {
+    if (this.model.state == State.OUTDATED || this.model.state == State.UNTRAINED) {
+      this.textMLEngine.train(this.model);
+      this.model.state = State.TRAINED;
+    }
   }
 
   run(text: Data_Text): Data_Label {
     return this.textMLEngine.run(text);
   }
 
-  getModel(){
+  getModel() {
     return this.model;
   }
 }

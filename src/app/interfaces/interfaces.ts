@@ -9,7 +9,7 @@ export type Data_Text = string
 
 export interface ITextModel {
     name: string,
-    data: Set<ITextData>,
+    labels: Map<Data_Label, Set<Data_Text>>,
     state: State
 }
 
@@ -32,5 +32,5 @@ export interface IEngine {
 
 export interface ITextEngine extends IEngine {
     run(entry: Data_Text): Data_Label,
-    train(data: Set<ITextData>): any,
+    train(model: ITextModel): any,
 }

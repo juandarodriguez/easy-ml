@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 
 @Component({
@@ -13,10 +13,6 @@ export class MlModelToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  loadModel() {
-    this.textClasifyerService.load("el modelo");
   }
 
 }

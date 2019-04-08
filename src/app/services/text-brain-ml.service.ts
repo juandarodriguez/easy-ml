@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as brain from 'brain.js';
-import { IConfiguration, ITextEngine, ITextData, Data_Label, Data_Text } from '../interfaces/interfaces';
+import { IConfiguration, ITextEngine, ITextData, Data_Label, Data_Text, ITextModel } from '../interfaces/interfaces';
 import { BagOfWordsService } from './bag-of-words.service';
 import { transition } from '@angular/animations';
 import { TransitiveCompileNgModuleMetadata } from '@angular/compiler';
@@ -90,8 +90,16 @@ export class TextBrainMLService implements ITextEngine {
     return {traindata, classes: this.classes};
   }
 
-  train(data: Set<ITextData>) {
+  train(model: ITextModel) {
     
+    let data = new Set<ITextData>();
+
+    for(let label of model.labels.keys()){
+      for(let text of model.labels.get(label)){
+        data.add({label: label, text: text})
+      }
+    }
+
     let { traindata, classes } = this.prepareTrainData(data);
     
     let ann_train = traindata.map( pair => {
@@ -100,8 +108,12 @@ export class TextBrainMLService implements ITextEngine {
         output: this.bow.vec_result(pair[1], Object.keys(classes).length)
       };
     });
+
+    this.net = new brain.NeuralNetwork();
   
     this.net.train(ann_train, this.configuration);
+    console.log(model);
+    alert ('modelo entrenado');
   }
 
   modelToString(): string {

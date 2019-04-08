@@ -8,7 +8,7 @@
 
     <form class="form">
       <mat-form-field class="full-width">
-        <input matInput placeholder="Término" value="1000">
+        <input name="testText" [(ngModel)]="testText" matInput placeholder="Término" value="">
       </mat-form-field>
       
     </form>
@@ -16,7 +16,7 @@
   </mat-card-content>
   
   <mat-card-actions>
-    <button (click)="comprobar()" mat-raised-button>Comprobar</button>
+    <button (click)="test()" mat-raised-button>Comprobar</button>
   </mat-card-actions>
 
 </mat-card>

@@ -13,9 +13,8 @@ export type DialogData = string;
 export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
-  texts: Set<Data_Text> = new Set();
   @Input('label') label: Data_Label;
-  @Input('texts') _texts: Data_Text[]
+  @Input('texts') texts:  Set<Data_Text>;
   @Output() onChildDeleted = new EventEmitter<Data_Label>();
 
   constructor(
@@ -24,7 +23,10 @@ export class MlLabelContainerComponent implements OnInit {
     private snackBar: MatSnackBar) {
   }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    console.log(this.label);
+    console.log(this.texts);
+  }
 
   addTerm() {
     const dialogRef = this.dialog.open(MlLabelContainerDialogComponent, {
@@ -34,8 +36,12 @@ export class MlLabelContainerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      // This is the first text to be added in the label set
+      if(this.texts == undefined){
+        this.texts = new Set<Data_Text>();
+      }
       this.texts.add(result);
-      this.textClasifyerService.addEntry(result, this.label)
+      this.textClasifyerService.addEntry({label: this.label, text: result});
       this.snackBar.open('Añadido texto',
         '', {
           duration: 2000,
@@ -54,7 +60,7 @@ export class MlLabelContainerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.texts.delete(result);
-      this.textClasifyerService.removeEntry(result)
+      this.textClasifyerService.removeEntry({label: this.label , text:result})
       this.snackBar.open('Eliminado texto',
         '', {
           duration: 2000,

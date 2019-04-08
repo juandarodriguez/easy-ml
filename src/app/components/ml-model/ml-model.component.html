@@ -1,3 +1,4 @@
+
 <mat-expansion-panel expanded (opened)="panelOpenState = true" (closed)="panelOpenState = false">
   <mat-expansion-panel-header>
     <mat-panel-title>
@@ -8,9 +9,19 @@
     </mat-panel-description>
   </mat-expansion-panel-header>
   <button (click)="addLabel()" mat-button>
-    <mat-icon>add_circle</mat-icon> Añadir etiqueta</button>
+    <mat-icon>add_circle</mat-icon> Añadir etiqueta
+  </button>
+  <button (click)="loadModel()" mat-button>
+    <mat-icon>input</mat-icon> Cargar modelo
+  </button>
+  <button (click)="trainModel()" mat-button>
+    <mat-icon>perm_data_setting</mat-icon> Entrenar modelo
+  </button>
+  <button (click)="loadScratch()" mat-button>
+    <img src="assets/images/scratch_icon.svg"> Cargar Scratch
+  </button>
   <mat-divider></mat-divider>
-  <app-ml-label-container *ngFor="let label of labels" (onChildDeleted)="onDeleted($event)" [label]="label"></app-ml-label-container>
+  <app-ml-label-container *ngFor="let label of labels" (onChildDeleted)="onDeleted($event)" [texts]="texts.get(label)" [label]="label"></app-ml-label-container>
 </mat-expansion-panel>
 
 
