@@ -1,4 +1,4 @@
-<mat-spinner *ngIf="training" class="loading-indicator" [diameter]="200"></mat-spinner>
+<mat-spinner *ngIf="model.state == 'TRAINING'" class="loading-indicator" [diameter]="200"></mat-spinner>
 
 
 <mat-card class="card">

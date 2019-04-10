@@ -170,6 +170,7 @@ export class TextClasifyerService {
 
   train(): Observable<any> {
     if (this.model.state == State.OUTDATED || this.model.state == State.UNTRAINED) {
+      this.model.state = State.TRAINING;
       return this.textMLEngine.train(this.model).pipe(
         map(response => {
           this.model.state = State.TRAINED;

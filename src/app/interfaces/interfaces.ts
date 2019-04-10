@@ -2,7 +2,8 @@ export enum State {
     UNTRAINED = "UNTRAINED",
     TRAINED = "TRAINED",
     OUTDATED = "OUTDATED",
-    EMPTY = "EMPTY"
+    EMPTY = "EMPTY",
+    TRAINING = "TRAINING"
 }
 
 export type Data_Label = string

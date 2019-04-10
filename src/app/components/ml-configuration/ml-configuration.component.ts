@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IConfiguration, ITextModel } from 'src/app/interfaces/interfaces';
 import { TextClasifyerService, configDefault } from 'src/app/services/text-clasifyer.service';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-ml-configuration',
@@ -16,7 +17,10 @@ export class MlConfigurationComponent implements OnInit {
     return JSON.parse(JSON.stringify(src));
   }
 
-  constructor(private textClasifyerService: TextClasifyerService) { 
+  constructor(
+    private textClasifyerService: TextClasifyerService,
+    private snackBar: MatSnackBar
+    ) {
     this.config = this.jsonCopy(configDefault);
     this.model = textClasifyerService.getModel();
   }
@@ -25,18 +29,24 @@ export class MlConfigurationComponent implements OnInit {
   }
 
   update() {
-    this.textClasifyerService.configure(this.config);
-    this.textClasifyerService.train().subscribe(r => {
-      let mensaje = `Modelo entrenado con los nuevos parámetros.
+    this.snackBar.open('Entrenando modelo',
+      'Espere por favor.', {
+        duration: 2000,
+      });
+    setTimeout(() => {
+      this.textClasifyerService.configure(this.config);
+      this.textClasifyerService.train().subscribe(r => {
+        let mensaje = `Modelo entrenado con los nuevos parámetros.
       Error cometido: ${r.error}
       Iteraciones: ${r.iterations}`
-      alert(mensaje);
-    });
-  }
+        alert(mensaje);
+      });
+    }, 100);
 
-  reset(){
+  }
+  reset() {
     this.config = this.jsonCopy(configDefault);
-    
+
     this.textClasifyerService.configure(this.config);
   }
 

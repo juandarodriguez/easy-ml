@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
-import { ITextData, Data_Label, ITextModel, State, Data_Text } from 'src/app/interfaces/interfaces';
-import { BagOfWordsService } from 'src/app/services/bag-of-words.service';
+import { Data_Label, ITextModel, Data_Text } from 'src/app/interfaces/interfaces';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
+import { Observable } from 'rxjs';
+import { ProgressSpinnerDialogComponent } from '../progress-spinner-dialog/progress-spinner-dialog.component';
 
 type DialogData = Data_Label;
 
@@ -17,7 +18,6 @@ export class MlModelComponent implements OnInit {
   model: ITextModel
   labels = new Set<Data_Label>();
   texts = new Map<Data_Label, Set<Data_Text>>();
-  training = false;
 
 
   constructor(
@@ -38,18 +38,9 @@ export class MlModelComponent implements OnInit {
   }
 
   trainModel() {
-    this.training = true;
-    setTimeout(() => {
-      this.textClasifyerService.train().subscribe(r => {
 
-        let mensaje = `Modelo entrenado.
-        Error cometido: ${r.error}
-        Iteraciones: ${r.iterations}`
-        alert(mensaje);
-        this.training = false;
-      });
-    }, 100)
-
+    let trainObservable = this.textClasifyerService.train();
+    this.showProgressSpinnerUntilExecuted(trainObservable);
   }
 
   run() {
@@ -76,6 +67,33 @@ export class MlModelComponent implements OnInit {
   onDeleted($event) {
     this.labels.delete($event);
     this.textClasifyerService.removeLabel($event);
+  }
+
+
+
+  showProgressSpinnerUntilExecuted(observable: Observable<Object>) {
+    let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
+      panelClass: 'transparent',
+      disableClose: true
+    });
+    let subscription = observable.subscribe(
+      (response: any) => {
+        subscription.unsubscribe();
+        //handle response
+
+        let mensaje = `Modelo entrenado.
+            Error cometido: ${response.error}
+            Iteraciones: ${response.iterations}`
+        alert(mensaje);
+
+        dialogRef.close();
+      },
+      (error) => {
+        subscription.unsubscribe();
+        //handle error
+        dialogRef.close();
+      }
+    );
   }
 
 }

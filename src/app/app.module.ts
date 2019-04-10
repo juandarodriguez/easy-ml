@@ -28,6 +28,7 @@ import { MlConfigurationComponent } from './components/ml-configuration/ml-confi
 import { MlTestModelComponent } from './components/ml-test-model/ml-test-model.component';
 import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteConfirmComponent } from './components/ml-label-container/ml-label-container.component';
 import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-toolbar.component';
+import { ProgressSpinnerDialogComponent } from './components/progress-spinner-dialog/progress-spinner-dialog.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-
     MlLabelContainerDialogComponent,
     MlDeleteConfirmComponent,
     MlAddLabelDialogComponent,
-    MlModelToolbarComponent
+    MlModelToolbarComponent,
+    ProgressSpinnerDialogComponent
   ],
   entryComponents: [
     MlLabelContainerComponent,
