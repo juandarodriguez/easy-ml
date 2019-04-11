@@ -10,6 +10,7 @@ import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 export class MlTestModelComponent implements OnInit {
 
   testText: string;
+  result: string;
 
   constructor(
     private textClasifyerService: TextClasifyerService,
@@ -19,11 +20,11 @@ export class MlTestModelComponent implements OnInit {
   }
 
   test(){
-    let result = this.textClasifyerService.run(this.testText);
-    this.snackBar.open(result,
-    'Resultado', {
-      duration: 2000,
-    });
+    this.result = this.textClasifyerService.run(this.testText);
+    // this.snackBar.open(this.result,
+    // 'Resultado', {
+    //   duration: 2000,
+    // });
   }
 
 }

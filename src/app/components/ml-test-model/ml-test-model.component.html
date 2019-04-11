@@ -10,6 +10,9 @@
       <mat-form-field class="full-width">
         <input name="testText" [(ngModel)]="testText" matInput placeholder="Término" value="">
       </mat-form-field>
+      <p *ngIf="result">
+        El texto pertenece a la clase: <i>{{result}}</i>
+      </p>
       
     </form>
 
