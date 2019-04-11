@@ -2,4 +2,8 @@
   <span>Easy-ML</span>
   <span class="fill-remaining-space"></span>
 
+  <span class="model-name" [hidden]="edit" (click)="editModelName()">{{model.name}}</span>
+  <span  [hidden]="!edit" class="editable model-name"><input name="inputNameModel"  matInput #inputNameModel (keyup)="updateModelName($event)" [(ngModel)]="model.name"></span>
+  
+
 </mat-toolbar>

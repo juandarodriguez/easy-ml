@@ -3,3 +3,17 @@
        Every toolbar row uses a flexbox row layout. */
     flex: 1 1 auto;
   }
+
+  .editable {
+    color: goldenrod;
+    font-style: oblique;
+  }
+
+  .model-name {
+    font-size: 0.75em;
+    font-weight: lighter;
+    border: 1px solid white ;
+    border-radius: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }

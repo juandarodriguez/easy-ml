@@ -41,6 +41,7 @@ export class MlModelComponent implements OnInit {
   onLoaded(e) {
 
     let file = e.target.files[0];
+    this.model.name = file.name.replace(/\.[^/.]+$/, "");
     let fileReader = new FileReader();
     
     fileReader.onload = (e) => {

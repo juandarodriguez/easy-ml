@@ -45,7 +45,7 @@ import { ProgressSpinnerDialogComponent } from './components/progress-spinner-di
     MlDeleteConfirmComponent,
     MlAddLabelDialogComponent,
     MlModelToolbarComponent,
-    ProgressSpinnerDialogComponent
+    ProgressSpinnerDialogComponent,
   ],
   entryComponents: [
     MlLabelContainerComponent,

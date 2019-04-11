@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
+import { ITextModel } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-ml-model-toolbar',
@@ -8,10 +9,31 @@ import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 })
 export class MlModelToolbarComponent implements OnInit {
 
-  constructor(private textClasifyerService: TextClasifyerService) {
+  model: ITextModel;
+  edit = false;
+  @ViewChild("inputNameModel") inputNameModel: ElementRef;
 
+  constructor(private textClasifyerService: TextClasifyerService) {
   }
 
   ngOnInit() {
+    this.model = this.textClasifyerService.getModel();     
+  }
+
+  editModelName(){
+    this.edit = true;
+    setTimeout(() => {
+      this.inputNameModel.nativeElement.focus();
+    }, 0);
+
+    
+  }
+
+  updateModelName(event){
+    console.log(event);
+    if(event.key=="Enter"){
+      this.edit = false;
+    }
+    
   }
 }

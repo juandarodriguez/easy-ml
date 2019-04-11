@@ -26,7 +26,7 @@ export class TextClasifyerService {
 
   constructor(private textMLEngine: TextBrainMLService) {
     this.model = {
-      name: null,
+      name: "ponme un nombre",
       labels: new Map<Data_Label, Set<Data_Text>>(),
       state: State.EMPTY
     }
@@ -83,10 +83,10 @@ export class TextClasifyerService {
 
     return modelJSON;
   }
-  save(fileName?: string) {
+  save() {
 
     const blob = new Blob([this.serializeModel()], { type: 'application/json' });
-    saveAs(blob, fileName);
+    saveAs(blob, this.model.name);
 
     console.log();
 
