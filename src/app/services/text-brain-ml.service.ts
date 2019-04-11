@@ -103,8 +103,6 @@ export class TextBrainMLService implements ITextEngine {
 
     this.net = new brain.NeuralNetwork();
 
-    this.net.train(ann_train, this.configuration);
-
     let promise = this.net.trainAsync(ann_train, this.configuration)
 
     return from(promise);

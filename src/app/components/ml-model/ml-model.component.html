@@ -1,6 +1,3 @@
-<mat-spinner *ngIf="model.state == 'TRAINING'" class="loading-indicator" [diameter]="200"></mat-spinner>
-
-
 <mat-card class="card">
   <mat-card-content>
     <button (click)="loadModel()" mat-button>
@@ -22,7 +19,11 @@
       Datos para el entrenamiento del modelo
     </mat-panel-title>
     <mat-panel-description>
-      Estado del modelo: {{model.state}}
+      Estado del modelo: {{model.state}} 
+      <span style="margin-left:10px"  *ngIf="model.state == 'TRAINED'">
+        [<b>error</b>: {{textClasifyerService.trainResult.error | number:'1.4-6'}}
+        <b>iterations</b>: {{textClasifyerService.trainResult.iterations}}]
+      </span>
     </mat-panel-description>
 
   </mat-expansion-panel-header>

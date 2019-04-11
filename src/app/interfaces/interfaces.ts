@@ -52,3 +52,8 @@ export interface ITextEngine extends IEngine {
     run(entry: Data_Text): Data_Label,
     train(model: ITextModel): any,
 }
+
+export interface ITrainResult {
+    error: number,
+    iterations: number
+}

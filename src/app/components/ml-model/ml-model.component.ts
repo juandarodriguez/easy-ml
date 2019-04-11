@@ -1,9 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
-import { Data_Label, ITextModel, Data_Text } from 'src/app/interfaces/interfaces';
+import { Data_Label, ITextModel, Data_Text, ITrainResult } from 'src/app/interfaces/interfaces';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
-import { ProgressSpinnerDialogComponent } from '../progress-spinner-dialog/progress-spinner-dialog.component';
+import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 
 type DialogData = Data_Label;
 
@@ -18,11 +18,15 @@ export class MlModelComponent implements OnInit {
   model: ITextModel
   labels = new Set<Data_Label>();
   texts = new Map<Data_Label, Set<Data_Text>>();
+  trainResult: ITrainResult;
 
 
   constructor(
     private textClasifyerService: TextClasifyerService,
-    private dialog: MatDialog, private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private progressSpinner: ShowProgressSpinnerService) {
+      this.trainResult = this.textClasifyerService.trainResult;
   }
 
   ngOnInit() {
@@ -40,7 +44,7 @@ export class MlModelComponent implements OnInit {
   trainModel() {
 
     let trainObservable = this.textClasifyerService.train();
-    this.showProgressSpinnerUntilExecuted(trainObservable);
+    let d = this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
   }
 
   run() {
@@ -67,33 +71,6 @@ export class MlModelComponent implements OnInit {
   onDeleted($event) {
     this.labels.delete($event);
     this.textClasifyerService.removeLabel($event);
-  }
-
-
-
-  showProgressSpinnerUntilExecuted(observable: Observable<Object>) {
-    let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-      panelClass: 'transparent',
-      disableClose: true
-    });
-    let subscription = observable.subscribe(
-      (response: any) => {
-        subscription.unsubscribe();
-        //handle response
-
-        let mensaje = `Modelo entrenado.
-            Error cometido: ${response.error}
-            Iteraciones: ${response.iterations}`
-        alert(mensaje);
-
-        dialogRef.close();
-      },
-      (error) => {
-        subscription.unsubscribe();
-        //handle error
-        dialogRef.close();
-      }
-    );
   }
 
 }
