@@ -3,6 +3,7 @@ import { ITextModel, State, IConfiguration, Data_Text, Data_Label, ITextData, IT
 import { TextBrainMLService } from './text-brain-ml.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { saveAs } from 'file-saver';
 
 
 export let configDefault: IConfiguration = {
@@ -51,67 +52,17 @@ export class TextClasifyerService {
     this.model.name = name;
   }
 
-  load(name: string): Observable<ITextModel> {
+  load(modelJSON: string): Observable<ITextModel> {
 
-    this.model.name = name;
+    let modelObj = JSON.parse(modelJSON);
 
-    this.model.labels.set('encender_lampara', new Set([
-      "que me tocan el culo ",
-      "enciende la luz",
-      "esto está muy oscuro",
-      "qué oscuridad",
-      "dale a la luz",
-      "enciende la lámpara",
-      "se está poniendo el sol",
-      "no veo nada",
-      "necesito luz",
-      "no hay suficiente luz"
-    ]));
-
-    this.model.labels.set('apagar_lampara', new Set([
-      "apaga la luz",
-      "apaga la lámpara",
-      "hay demasiada luz",
-      "menos luz",
-      "desconecta la luz",
-      "quiero estar en la oscuridad",
-      "está demasiado claro",
-      "mucha claridad",
-      "me gusta la oscuridad",
-      "prefiero la oscuridad",
-      "veo muy bien"
-    ]));
-
-    this.model.labels.set('encender_ventilador', new Set([
-      "qué sofocón",
-      "enciende el ventilador",
-      "hace mucho calor",
-      "demasiado calor",
-      "pon en marcha el ventilador",
-      "qué calor",
-      "conecta el ventilador",
-      "me afixio",
-      "me derrito",
-      "dale caña al ventilador",
-      "que bochorno",
-      "me abraso",
-      "que calor tan sofocante"
-    ]));
-
-    this.model.labels.set('apagar_ventilador', new Set([
-      "estoy arrecío",
-      "qué frío",
-      "apaga el ventilador",
-      "hace mucho viento",
-      "hace mucho frío",
-      "demasiado frío",
-      "quita el ventilador",
-      "me congelo",
-      "me voy a resfriar",
-      "hay mucha corriente",
-      "tengo la carne de gallina",
-      "me estoy quedando pajarito"
-    ]));
+    for(let key in modelObj){
+      let texts = new Set<Data_Text>();
+      this.model.labels.set(key, texts);
+      for(let text of modelObj[key]){
+        texts.add(text);
+      }
+    }
 
     this.model.state = State.UNTRAINED;
 
@@ -119,7 +70,7 @@ export class TextClasifyerService {
 
   }
 
-  save(name?: string) {
+  serializeModel(): string {
     let modelObject = {};
 
     for (let label of this.model.labels.keys()) {
@@ -129,6 +80,15 @@ export class TextClasifyerService {
       }
     }
     let modelJSON = JSON.stringify(modelObject);
+
+    return modelJSON;
+  }
+  save(fileName?: string) {
+
+    const blob = new Blob([this.serializeModel()], { type: 'application/json' });
+    saveAs(blob, fileName);
+
+    console.log();
 
   }
 
@@ -140,7 +100,7 @@ export class TextClasifyerService {
     this.model.labels.set(data.label, this.model.labels.get(data.label).add(data.text));
     if (this.model.state == State.TRAINED) {
       this.model.state = State.OUTDATED;
-    }else if(this.model.state == State.EMPTY){
+    } else if (this.model.state == State.EMPTY) {
       this.model.state = State.UNTRAINED;
     }
   }

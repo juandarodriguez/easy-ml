@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
 import { Data_Label, ITextModel, Data_Text, ITrainResult } from 'src/app/interfaces/interfaces';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
@@ -19,26 +19,45 @@ export class MlModelComponent implements OnInit {
   labels = new Set<Data_Label>();
   texts = new Map<Data_Label, Set<Data_Text>>();
   trainResult: ITrainResult;
-
+  @ViewChild('fileElement') fileElement: ElementRef;
 
   constructor(
     private textClasifyerService: TextClasifyerService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private progressSpinner: ShowProgressSpinnerService) {
-      this.trainResult = this.textClasifyerService.trainResult;
+    this.trainResult = this.textClasifyerService.trainResult;
   }
 
   ngOnInit() {
     this.model = this.textClasifyerService.getModel();
   }
 
-  loadModel() {
-    this.textClasifyerService.load("kuku").subscribe(model => {
-      this.model = model;
-      this.labels = new Set(model.labels.keys());
-      this.texts = model.labels;
-    });
+
+  loadModel(){
+    this.fileElement.nativeElement.click();
+  }
+
+  onLoaded(e) {
+
+    let file = e.target.files[0];
+    let fileReader = new FileReader();
+    
+    fileReader.onload = (e) => {
+      console.log(fileReader.result);
+      this.textClasifyerService.load(fileReader.result.toString()).subscribe(model => {
+        this.model = model;
+        this.labels = new Set(model.labels.keys());
+        this.texts = model.labels;
+      });
+    }
+
+    fileReader.readAsText(file);
+
+  }
+
+  saveModel() {
+    this.textClasifyerService.save();
   }
 
   trainModel() {

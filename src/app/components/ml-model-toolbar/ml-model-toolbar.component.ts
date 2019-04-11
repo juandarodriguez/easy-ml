@@ -14,9 +14,4 @@ export class MlModelToolbarComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  saveModel(){
-    this.textClasifyerService.save();
-  }
-
 }

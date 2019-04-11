@@ -1,7 +1,12 @@
 <mat-card class="card">
   <mat-card-content>
+    <input hidden="true" type="file" #fileElement (change)="onLoaded($event)">
+
     <button (click)="loadModel()" mat-button>
       <mat-icon>input</mat-icon> Cargar modelo
+    </button>
+    <button [disabled]="model.state == 'EMPTY'" (click)="saveModel()" mat-button>
+      <mat-icon>save</mat-icon> Guardar modelo
     </button>
     <button [disabled]="model.state == 'EMPTY' || model.state == 'TRAINED'" (click)="trainModel()" mat-button>
       <mat-icon>perm_data_setting</mat-icon> {{training? 'Entrenando' : 'Entrenar'}} modelo
@@ -13,28 +18,35 @@
   </mat-card-content>
 </mat-card>
 
-<mat-expansion-panel expanded (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      Datos para el entrenamiento del modelo
-    </mat-panel-title>
-    <mat-panel-description>
-      Estado del modelo: {{model.state}} 
-      <span style="margin-left:10px"  *ngIf="model.state == 'TRAINED'">
-        [<b>error</b>: {{textClasifyerService.trainResult.error | number:'1.4-6'}}
-        <b>iterations</b>: {{textClasifyerService.trainResult.iterations}}]
-      </span>
-    </mat-panel-description>
+<mat-card class="card">
 
-  </mat-expansion-panel-header>
-  <button (click)="addLabel()" mat-button>
-    <mat-icon>add_circle</mat-icon> Añadir etiqueta
-  </button>
-  <mat-divider></mat-divider>
-  <app-ml-label-container *ngFor="let label of labels" (onChildDeleted)="onDeleted($event)" [texts]="texts.get(label)"
-    [label]="label"></app-ml-label-container>
-</mat-expansion-panel>
+  <mat-card-content>
+    <mat-expansion-panel expanded (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Datos para el entrenamiento del modelo
+        </mat-panel-title>
+        <mat-panel-description>
+          Estado del modelo: {{model.state}}
+          <span style="margin-left:10px" *ngIf="model.state == 'TRAINED'">
+            [
+            <b>error</b>: {{textClasifyerService.trainResult.error | number:'1.4-6'}}
+            <b>iterations</b>: {{textClasifyerService.trainResult.iterations}}]
+          </span>
+        </mat-panel-description>
 
+      </mat-expansion-panel-header>
+      <mat-action-row>
+        <button (click)="addLabel()" mat-button>
+          <mat-icon>add_circle</mat-icon> Añadir etiqueta
+        </button>
+      </mat-action-row>
+
+
+      <app-ml-label-container *ngFor="let label of labels" (onChildDeleted)="onDeleted($event)" [texts]="texts.get(label)" [label]="label"></app-ml-label-container>
+    </mat-expansion-panel>
+  </mat-card-content>
+</mat-card>
 
 
 <div class="cards">

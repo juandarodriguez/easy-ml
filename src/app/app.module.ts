@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FileSelectDirective } from 'ng2-file-upload';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar'; 
@@ -34,6 +35,7 @@ import { ProgressSpinnerDialogComponent } from './components/progress-spinner-di
 @NgModule({
   declarations: [
     AppComponent,
+    FileSelectDirective,
     PageNotFoundComponent,
     MlModelComponent,
     MlConfigurationComponent,
