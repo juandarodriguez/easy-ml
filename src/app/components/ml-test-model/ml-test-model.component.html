@@ -10,16 +10,22 @@
       <mat-form-field class="full-width">
         <input name="testText" [(ngModel)]="testText" matInput placeholder="Término" value="">
       </mat-form-field>
-      <p *ngIf="result">
-        El texto pertenece a la clase: <i>{{result}}</i>
-      </p>
+      <div *ngIf="result">
+        <p>
+            clase: <b>{{result.label}}</b>
+        </p>
+         <p>
+            confianza: <b>{{result.confidence * 100 | number:'1.2-2'}} %</b>
+         </p>
+        
+        </div>
       
     </form>
 
   </mat-card-content>
   
   <mat-card-actions>
-    <button (click)="test()" mat-raised-button>Comprobar</button>
+    <button [disabled]="textClasifyerService.model.state != 'TRAINED'" (click)="test()" mat-raised-button>Comprobar</button>
   </mat-card-actions>
 
 </mat-card>

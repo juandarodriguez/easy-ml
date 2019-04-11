@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as brain from 'brain.js';
-import { IConfiguration, ITextEngine, ITextData, Data_Label, Data_Text, ITextModel } from '../interfaces/interfaces';
+import { IConfiguration, ITextEngine, ITextData, Data_Label, Data_Text, ITextModel, IRunResult } from '../interfaces/interfaces';
 import { BagOfWordsService } from './bag-of-words.service';
 import { Observable, from } from 'rxjs';
 
@@ -26,7 +26,7 @@ export class TextBrainMLService implements ITextEngine {
     return true;
   }
 
-  run(entry: Data_Text): Data_Label {
+  run(entry: Data_Text): IRunResult {
     let term = this.bow.bow(entry, this.dict);
     let predict = this.net.run(term);
     let i = this.bow.maxarg(predict);
@@ -37,15 +37,20 @@ export class TextBrainMLService implements ITextEngine {
 
     console.log(predict);
 
-    console.log((() => {
-      let s = 0;
-      for (let i = 0; i < predict.length; i++) {
-        s = s + predict[i];
-      }
-      return s;
-    })())
+    let prediction = new Map<Data_Label, number>();
+    for (let i = 0; i < predict.length; i++) {
+      prediction.set(flippedClasses[i], predict[i]);
+    }
+    
 
-    return flippedClasses[i];
+    let result: IRunResult = {
+      text: entry,
+      label: flippedClasses[i],
+      confidence: predict[i],
+      prediction: prediction
+    }
+
+    return result;
   }
 
   prepareTrainData(data: Set<ITextData>): any {

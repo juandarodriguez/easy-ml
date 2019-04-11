@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ITextModel, State, IConfiguration, Data_Text, Data_Label, ITextData, ITrainResult } from '../interfaces/interfaces';
+import { ITextModel, State, IConfiguration, Data_Text, Data_Label, ITextData, ITrainResult, IRunResult } from '../interfaces/interfaces';
 import { TextBrainMLService } from './text-brain-ml.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -183,7 +183,7 @@ export class TextClasifyerService {
     }
   }
 
-  run(text: Data_Text): Data_Label {
+  run(text: Data_Text): IRunResult {
     return this.textMLEngine.run(text);
   }
 

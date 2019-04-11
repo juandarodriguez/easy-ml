@@ -43,13 +43,20 @@ export interface IConfiguration {
     callbackPeriod?: number,           // the number of iterations through the training data between callback calls
 }
 
+export interface IRunResult {
+    text: Data_Text,
+    label: Data_Label,
+    confidence: number,
+    prediction: Map<Data_Label, number>
+}
+
 export interface IEngine {
     configure(c: IConfiguration): boolean,
     modelToString(): string
 }
 
 export interface ITextEngine extends IEngine {
-    run(entry: Data_Text): Data_Label,
+    run(entry: Data_Text): IRunResult,
     train(model: ITextModel): any,
 }
 
