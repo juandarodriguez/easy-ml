@@ -23,6 +23,7 @@ export class TextClasifyerService {
   private model: ITextModel;
   private configuration: IConfiguration = configDefault;
   public trainResult: ITrainResult;
+  private bc = new BroadcastChannel('clasify_channel');
 
   constructor(private textMLEngine: TextBrainMLService) {
     this.model = {
@@ -31,6 +32,7 @@ export class TextClasifyerService {
       state: State.EMPTY
     }
     this.textMLEngine.configure(this.configuration);
+    this.bc.onmessage = function (ev) { console.log(ev); }
   }
 
   getConfiguration(): IConfiguration {
@@ -145,6 +147,10 @@ export class TextClasifyerService {
 
   run(text: Data_Text): IRunResult {
     return this.textMLEngine.run(text);
+  }
+
+  getModelFuntionString(){
+    return this.textMLEngine.modelToString();
   }
 
   getModel() {

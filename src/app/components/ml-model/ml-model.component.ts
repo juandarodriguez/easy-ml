@@ -4,6 +4,7 @@ import { Data_Label, ITextModel, Data_Text, ITrainResult } from 'src/app/interfa
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
+import { ScratchManagerService } from '../../services/scratch-manager.service';
 
 type DialogData = Data_Label;
 
@@ -23,6 +24,7 @@ export class MlModelComponent implements OnInit {
 
   constructor(
     private textClasifyerService: TextClasifyerService,
+    private scratchManager: ScratchManagerService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private progressSpinner: ShowProgressSpinnerService) {
@@ -91,6 +93,14 @@ export class MlModelComponent implements OnInit {
   onDeleted($event) {
     this.labels.delete($event);
     this.textClasifyerService.removeLabel($event);
+  }
+
+  loadScratch(){
+    this.scratchManager.load();
+    
+  }
+
+  updateModelInScratch(){
   }
 
 }

@@ -31,6 +31,36 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 https://github.com/BrainJS/brain.js/issues/326
 
 
+## Cómo instalar y desarrollar scratch3
+
+git clone https://github.com/juandarodriguez/scratch-vm.git
+git clone https://github.com/juandarodriguez/scratch-blocks.git
+git clone https://github.com/juandarodriguez/scratch-gui.git
+
+cd scratch-blocks
+npm install
+npm link
+
+cd ..
+cd scratch-vm
+npm install
+npm link
+npm link scratch-blocks
+
+cd ..
+cd scratch-gui
+npm install
+npm link scratch-blocks
+npm link scratch-vm
+
+npm start
+
+Se inicia la interfaz de scratch con los módulos scratch-vm y 
+scratch-blocks, apuntando a las copias que acabamos de bajar.
+
+
+
+
 ## El código que me ha servido de modelo para el clasificado basado en red neuronal con bag of words
 
     let texts =

@@ -19,8 +19,11 @@ export class TextBrainMLService implements ITextEngine {
   }
 
   private toFunction() {
-    return this.net.toFunction();
+    let fun = this.toFunction();
+    console.log(fun);
+    return fun;
   }
+  
   configure(c: IConfiguration): boolean {
     this.configuration = c;
     return true;
@@ -115,6 +118,8 @@ export class TextBrainMLService implements ITextEngine {
   }
 
   modelToString(): string {
-    return this.toFunction().toString();
+    let code = this.toFunction().toString();
+    console.log(code);
+    return code;
   }
 }
