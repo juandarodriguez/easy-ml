@@ -14,8 +14,8 @@ export class ScratchManagerService {
   }
 
   updateModel() {
-    let modelFuncString = this.textClasifyerService.getModelFuntionString();
-    let code = modelFuncString.match(/function[^{]+\{([\s\S]*)\}$/)[1];
-    this.scratchWindow.postMessage(code, "*");
+    let model = this.textClasifyerService.model2JSON();
+    console.log(this.scratchWindow);
+    this.scratchWindow.postMessage(model, "*");
   }
 }

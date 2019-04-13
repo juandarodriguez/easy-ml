@@ -122,4 +122,16 @@ export class TextBrainMLService implements ITextEngine {
     console.log(code);
     return code;
   }
+
+  model2JSON(){
+    return this.net.toJSON();
+  }
+
+  getDict(){
+    return this.dict;
+  }
+
+  getClasses(){
+    return this.classes;
+  }
 }

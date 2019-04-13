@@ -58,10 +58,10 @@ export class TextClasifyerService {
 
     let modelObj = JSON.parse(modelJSON);
 
-    for(let key in modelObj){
+    for (let key in modelObj) {
       let texts = new Set<Data_Text>();
       this.model.labels.set(key, texts);
-      for(let text of modelObj[key]){
+      for (let text of modelObj[key]) {
         texts.add(text);
       }
     }
@@ -149,11 +149,20 @@ export class TextClasifyerService {
     return this.textMLEngine.run(text);
   }
 
-  getModelFuntionString(){
+  getModelFuntionString() {
     return this.textMLEngine.modelToString();
   }
 
   getModel() {
     return this.model;
+  }
+
+  model2JSON() {
+    let m = {
+      modelJSON: this.textMLEngine.model2JSON(),
+      dict: this.textMLEngine.getDict(),
+      classes: this.textMLEngine.getClasses()
+    }
+    return JSON.stringify(m);
   }
 }

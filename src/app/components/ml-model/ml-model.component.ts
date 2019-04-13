@@ -101,6 +101,7 @@ export class MlModelComponent implements OnInit {
   }
 
   updateModelInScratch(){
+    this.scratchManager.updateModel();
   }
 
 }
