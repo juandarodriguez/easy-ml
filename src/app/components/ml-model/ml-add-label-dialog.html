@@ -1,10 +1,10 @@
 <div mat-dialog-content>
   <p>Introduce la etiqueta</p>
   <mat-form-field>
-    <input matInput [(ngModel)]="data">
+    <input matInput cdkFocusInitial [(ngModel)]="data">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" (keyup.enter)="close($event)" cdkFocusInitial>Ok</button>
   <button mat-button (click)="onNoClick()">Cancelar</button>
-  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
 </div>

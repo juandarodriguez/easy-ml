@@ -121,6 +121,10 @@ export class MlAddLabelDialogComponent {
     public dialogRef: MatDialogRef<MlAddLabelDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
+  close(event) {
+    console.log(event);
+  }
+  
   onNoClick(): void {
     this.dialogRef.close();
   }
