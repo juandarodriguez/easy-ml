@@ -4,6 +4,7 @@ import { TextBrainMLService } from './text-brain-ml.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
+import { ScratchManagerService } from './scratch-manager.service';
 
 
 export let configDefault: IConfiguration = {
@@ -25,7 +26,10 @@ export class TextClasifyerService {
   public trainResult: ITrainResult;
   private bc = new BroadcastChannel('clasify_channel');
 
-  constructor(private textMLEngine: TextBrainMLService) {
+  constructor(
+    private textMLEngine: TextBrainMLService,
+    private scratchManager: ScratchManagerService
+  ) {
     this.model = {
       name: "ponme un nombre",
       labels: new Map<Data_Label, Set<Data_Text>>(),
@@ -131,12 +135,22 @@ export class TextClasifyerService {
     }
   }
 
+  updateScratchModel() {
+    let model = this.model2JSON();
+    this.scratchManager.scratchWindow.postMessage(model, "*");
+    this.scratchManager.modelUpdated = true;
+  }
+
   train(): Observable<any> {
     if (this.model.state == State.OUTDATED || this.model.state == State.UNTRAINED) {
       this.model.state = State.TRAINING;
       return this.textMLEngine.train(this.model).pipe(
         map(response => {
           this.model.state = State.TRAINED;
+          if (this.scratchManager.scratchWindow && !this.scratchManager.scratchWindow.closed) {
+            console.log('Updating model in scratch');
+            this.updateScratchModel();
+          }
           return response;
         })
       )

@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
-import { Data_Label, ITextModel, Data_Text, ITrainResult } from 'src/app/interfaces/interfaces';
+import { Data_Label, ITextModel, Data_Text, ITrainResult, State } from 'src/app/interfaces/interfaces';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
@@ -36,7 +36,7 @@ export class MlModelComponent implements OnInit {
   }
 
 
-  loadModel(){
+  loadModel() {
     this.fileElement.nativeElement.click();
   }
 
@@ -45,9 +45,9 @@ export class MlModelComponent implements OnInit {
     let file = e.target.files[0];
     this.model.name = file.name.replace(/\.[^/.]+$/, "");
     let fileReader = new FileReader();
-    
+
     fileReader.onload = (e) => {
-      console.log(fileReader.result);
+      //console.log(fileReader.result);
       this.textClasifyerService.load(fileReader.result.toString()).subscribe(model => {
         this.model = model;
         this.labels = new Set(model.labels.keys());
@@ -95,13 +95,18 @@ export class MlModelComponent implements OnInit {
     this.textClasifyerService.removeLabel($event);
   }
 
-  loadScratch(){
+  loadScratch() {
     this.scratchManager.load();
-    
-  }
 
-  updateModelInScratch(){
-    this.scratchManager.updateModel();
+    // This is a trick I don't like at all, but I havent' found yet
+    // how to detect when the child tab is opened to send it the model
+    // So I wait for 5 second to give enough time to the Scratch startup
+    // process and then the model is updated.
+    setTimeout(() => {
+      if (this.model.state == State.TRAINED || this.model.state == State.OUTDATED) {
+        this.textClasifyerService.updateScratchModel();
+      }
+    }, 5000)
   }
 
 }

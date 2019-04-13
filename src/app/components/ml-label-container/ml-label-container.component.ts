@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Data_Label, Data_Text, ITextModel } from 'src/app/interfaces/interfaces';
 import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
+import { ScratchManagerService } from '../../services/scratch-manager.service';
 
 export type DialogData = string;
 
@@ -19,6 +20,7 @@ export class MlLabelContainerComponent implements OnInit {
 
   constructor(
     private textClasifyerService: TextClasifyerService,
+    private scratchManager: ScratchManagerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar) {
   }
@@ -42,6 +44,7 @@ export class MlLabelContainerComponent implements OnInit {
       }
       this.texts.add(result);
       this.textClasifyerService.addEntry({label: this.label, text: result});
+      this.scratchManager.modelUpdated = false;
       this.snackBar.open('Añadido texto',
         '', {
           duration: 2000,
@@ -61,6 +64,7 @@ export class MlLabelContainerComponent implements OnInit {
       console.log('The dialog was closed');
       this.texts.delete(result);
       this.textClasifyerService.removeEntry({label: this.label , text:result})
+      this.scratchManager.modelUpdated = false;
       this.snackBar.open('Eliminado texto',
         '', {
           duration: 2000,

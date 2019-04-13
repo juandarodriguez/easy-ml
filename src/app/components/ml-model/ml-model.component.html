@@ -9,15 +9,13 @@
       <mat-icon>save</mat-icon> Guardar modelo
     </button>
     <button [disabled]="model.state == 'EMPTY' || model.state == 'TRAINED'" (click)="trainModel()" mat-button>
-      <mat-icon>perm_data_setting</mat-icon> {{training? 'Entrenando' : 'Entrenar'}} modelo
+      <mat-icon>perm_data_setting</mat-icon> {{training? 'Entrenando' : 'Entrenar'}}
     </button>
 
-    <button (click)="loadScratch()" mat-button>
-      <img src="assets/images/scratch_icon.svg"> Cargar Scratch
+    <button  (click)="loadScratch()" mat-button>
+      <img src="assets/images/scratch_icon.svg"> Abrir Scratch
     </button>
-    <button (click)="updateModelInScratch()" mat-button>
-      <img src="assets/images/scratch_icon.svg"> Cargar Modelo en Scratch
-    </button>
+
   </mat-card-content>
 </mat-card>
 
