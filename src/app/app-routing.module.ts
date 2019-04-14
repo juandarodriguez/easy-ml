@@ -4,12 +4,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { MlModelComponent } from './components/ml-model/ml-model.component';
 
 const routes: Routes = [
-  {path: 'modelo', component: MlModelComponent},
-  {
-    path: '',
-    redirectTo: '/modelo',
-    pathMatch: 'full'
-  },
+  {path: '', component: MlModelComponent},
   { path: '**', component: PageNotFoundComponent }
 
 ];
