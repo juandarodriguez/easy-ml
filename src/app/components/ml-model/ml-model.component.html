@@ -9,7 +9,7 @@
       <mat-icon>save</mat-icon> Guardar modelo
     </button>
     <button [disabled]="model.state == 'EMPTY' || model.state == 'TRAINED'" (click)="trainModel()" mat-button>
-      <mat-icon>perm_data_setting</mat-icon> {{training? 'Entrenando' : 'Entrenar'}}
+      <mat-icon>perm_data_setting</mat-icon> Entrenar
     </button>
 
     <button  (click)="loadScratch()" mat-button>

@@ -21,7 +21,7 @@ export let configDefault: IConfiguration = {
 })
 export class TextClasifyerService {
 
-  private model: ITextModel;
+  public model: ITextModel;
   private configuration: IConfiguration = configDefault;
   public trainResult: ITrainResult;
   private bc = new BroadcastChannel('clasify_channel');

@@ -14,7 +14,7 @@ export class MlTestModelComponent implements OnInit {
   result: IRunResult;
 
   constructor(
-    private textClasifyerService: TextClasifyerService,
+    public textClasifyerService: TextClasifyerService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {

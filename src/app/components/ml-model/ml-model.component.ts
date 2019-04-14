@@ -15,6 +15,7 @@ type DialogData = Data_Label;
 })
 export class MlModelComponent implements OnInit {
 
+  panelOpenState = false;
   entry: string;
   model: ITextModel
   labels = new Set<Data_Label>();
