@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,7 +30,13 @@ import { MlTestModelComponent } from './components/ml-test-model/ml-test-model.c
 import { MlLabelContainerComponent, MlLabelContainerDialogComponent, MlDeleteConfirmComponent } from './components/ml-label-container/ml-label-container.component';
 import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-toolbar.component';
 import { ProgressSpinnerDialogComponent } from './components/progress-spinner-dialog/progress-spinner-dialog.component';
+import { ConfigService } from './services/config.service';
+import { HttpClientModule } from '@angular/common/http';
 
+
+export function initializeApp(appConfig: ConfigService){
+  return () => appConfig.load();
+}
 
 @NgModule({
   declarations: [
@@ -59,6 +65,7 @@ import { ProgressSpinnerDialogComponent } from './components/progress-spinner-di
     FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     FlexLayoutModule,
     MatCardModule,
     MatButtonModule,
@@ -76,7 +83,12 @@ import { ProgressSpinnerDialogComponent } from './components/progress-spinner-di
     MatProgressBarModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    ConfigService,
+    { provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [ConfigService], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

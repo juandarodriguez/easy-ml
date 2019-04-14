@@ -64,3 +64,12 @@ export interface ITrainResult {
     error: number,
     iterations: number
 }
+
+export interface IAppConfig {
+    env: {
+        name: string;
+    },
+    scratch: {
+        url: string
+    } 
+}
