@@ -1,5 +1,5 @@
 {
     "scratch": {
-        "url": "http://127.0.0.1:8601"
+        "url": "http://localhost:8601"
     }
 }

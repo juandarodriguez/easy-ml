@@ -31,7 +31,7 @@ export class MlModelToolbarComponent implements OnInit {
 
   updateModelName(event){
     console.log(event);
-    if(event.key=="Enter"){
+    if(event.key=="Enter" || event.type=="blur"){
       this.edit = false;
     }
     
