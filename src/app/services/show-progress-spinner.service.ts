@@ -19,10 +19,11 @@ export class ShowProgressSpinnerService {
 
   showProgressSpinnerUntilExecuted(observable: Observable<Object>) {
 
-    let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-      panelClass: 'transparent',
-      disableClose: true,
-    });
+    let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent>
+      = this.dialog.open(ProgressSpinnerDialogComponent, {
+        panelClass: 'transparent',
+        disableClose: true,
+      });
 
     let subscription = observable.subscribe(
       (response: any) => {

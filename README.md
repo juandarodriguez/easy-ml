@@ -143,3 +143,38 @@ scratch-blocks, apuntando a las copias que acabamos de bajar.
     console.log(predict);
     console.log(classes_array[this.bow.maxarg(predict)]);
     console.log(classes_array[this.bow.maxarg(net.run(test_bow_apaga))]);
+
+## El problema de la actualización del modelo de ML en los bloques de Scratch
+
+Necesito que desde scratch se pueda leer el modelo que se ha creado en easyML.
+Este modelo es un JSON. Por otro lado, cuando el script de scratch ha sido
+cargado desde un archivo sb3 que contiene un modelo construido con easyML, debe tenerse en cuenta este modelo.
+
+Impondré las siguientes reglas:
+
+- si existe un modelo útil (entrenado o desactualizado) en easyML, Scratch debe tener en cuenta este modelo, y actualizar su propiedad `runtime.easyml_model` (que es donde guarda el modelo para que pueda almacenarse en un fichero sb3) con dicho modelo.
+
+- si no existe un modelo útil en easyML, Scratch usará el modelo que está grabado en el fichero sb3 que haya cargado.
+
+Teniendo en cuenta estas dos reglas puedo realizar la siguiente implementación.
+
+EasyML guarda el modelo (JSON) que va construyendo en una propiedad del localStorage (easyml_model, por ejemplo).
+
+Cuando el bloque de ML de Scratch lo necesite, leerá el modelo de esta propiedad. Como NO ES POSIBLE compartir el localStorage cuando los dominios de las dos ventanas son distintos hay que buscar una manera de comunicación que supere ese problema. 
+
+La forma en que he resuelto el problema es mediante la librería "cross-domain-storage", que usa un truco basado en la comunicación entre ventanas de distinto dominio con `postMessage()` para emular la compartición de entradas del localStorage entre dominios distintos.
+
+He añadido un servicio denominado `CrossDomainStorageService` que se encarga de levantar la infraestructura necesaria para que esto funcione. Es importante que cualquier entrada del localStorage que quiera compartir con otro dominio (por lo pronto solo easyml_model), sea creada con la función `set()` del servicio  `CrossDomainStorageService`. Las entradas creadas directamente con `localStorage.setItem()`, según mis pruebas, no se comparten con otros dominios. 
+ 
+
+## Casos de uso para probar la carga del modelo correcto en Scratch
+
+1. Abrir easyML -> Cargar modelo -> Entrenar -> Abrir Scratch. El modelo de Scratch debe ser el modelo recien entrenado.
+
+2. A partir del anterior -> Cambiar modelo -> Entrenar -> Scratch Abierto. El modelo de Scratch debe actualizarse.
+
+3. EasyML cerrado -> Abrir Scratch -> Abrir script con bloques de ML. El modelo de Scratch debe ser el almacenado en el fichero sb3. Atención cuando se cierra easyML se debe borrar la entrada "easyml_model" del localStorage.
+
+4. EasyML cerrado -> Abrir Scratch -> Abrir script con bloques de ML -> abrir easyML -> entrenar modelo. El modelo de Scratch debe ser el nuevo modelo entrenado.
+
+5. EasyML cerrado -> Abrir Scratch -> usar bloques ML. No hay modelo y Scratch debe advertirlo.

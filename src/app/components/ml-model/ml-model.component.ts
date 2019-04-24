@@ -5,6 +5,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/
 import { Observable } from 'rxjs';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 import { ScratchManagerService } from '../../services/scratch-manager.service';
+import { CrossDomainStorageService } from '../../services/cross-domain-storage.service';
 
 type DialogData = Data_Label;
 
@@ -28,7 +29,8 @@ export class MlModelComponent implements OnInit {
     private scratchManager: ScratchManagerService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private progressSpinner: ShowProgressSpinnerService) {
+    private progressSpinner: ShowProgressSpinnerService,
+    private cdls: CrossDomainStorageService) {
     this.trainResult = this.textClasifyerService.trainResult;
   }
 
@@ -65,7 +67,6 @@ export class MlModelComponent implements OnInit {
   }
 
   trainModel() {
-
     let trainObservable = this.textClasifyerService.train();
     let d = this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
   }
@@ -98,16 +99,6 @@ export class MlModelComponent implements OnInit {
 
   loadScratch() {
     this.scratchManager.load();
-
-    // This is a trick I don't like at all, but I havent' found yet
-    // how to detect when the child tab is opened to send it the model
-    // So I wait for 5 second to give enough time to the Scratch startup
-    // process and then the model is updated.
-    setTimeout(() => {
-      if (this.model.state == State.TRAINED || this.model.state == State.OUTDATED) {
-        this.textClasifyerService.updateScratchModel();
-      }
-    }, 5000)
   }
 
 }

@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
 import { ScratchManagerService } from './scratch-manager.service';
+import { CrossDomainStorageService } from './cross-domain-storage.service';
+import {v4 as uuid} from 'uuid';
 
 
 export let configDefault: IConfiguration = {
@@ -24,19 +26,20 @@ export class TextClasifyerService {
   public model: ITextModel;
   private configuration: IConfiguration = configDefault;
   public trainResult: ITrainResult;
-  private bc = new BroadcastChannel('clasify_channel');
 
   constructor(
     private textMLEngine: TextBrainMLService,
-    private scratchManager: ScratchManagerService
+    private scratchManager: ScratchManagerService,
+    private storageService: CrossDomainStorageService
   ) {
+    
     this.model = {
+      id: uuid(),
       name: "ponme un nombre",
       labels: new Map<Data_Label, Set<Data_Text>>(),
       state: State.EMPTY
     }
     this.textMLEngine.configure(this.configuration);
-    this.bc.onmessage = function (ev) { console.log(ev); }
   }
 
   getConfiguration(): IConfiguration {
@@ -89,13 +92,10 @@ export class TextClasifyerService {
 
     return modelJSON;
   }
-  save() {
 
+  save() {
     const blob = new Blob([this.serializeModel()], { type: 'application/json' });
     saveAs(blob, this.model.name);
-
-    console.log();
-
   }
 
   addLabel(label: Data_Label) {
@@ -135,22 +135,17 @@ export class TextClasifyerService {
     }
   }
 
-  updateScratchModel() {
-    let model = this.model2JSON();
-    this.scratchManager.scratchWindow.postMessage(model, "*");
-    this.scratchManager.modelUpdated = true;
-  }
-
   train(): Observable<any> {
     if (this.model.state == State.OUTDATED || this.model.state == State.UNTRAINED) {
       this.model.state = State.TRAINING;
       return this.textMLEngine.train(this.model).pipe(
         map(response => {
+          this.model.id = uuid();
           this.model.state = State.TRAINED;
-          if (this.scratchManager.scratchWindow && !this.scratchManager.scratchWindow.closed) {
-            console.log('Updating model in scratch');
-            this.updateScratchModel();
-          }
+          console.log('Updating model storage');
+          let model = this.model2JSON();
+          this.storageService.set("easyml_model", model);
+
           return response;
         })
       )
@@ -173,6 +168,7 @@ export class TextClasifyerService {
 
   model2JSON() {
     let m = {
+      id: this.model.id,
       modelJSON: this.textMLEngine.model2JSON(),
       dict: this.textMLEngine.getDict(),
       classes: this.textMLEngine.getClasses()

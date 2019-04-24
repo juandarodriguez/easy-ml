@@ -10,6 +10,7 @@ export type Data_Label = string
 export type Data_Text = string
 
 export interface ITextModel {
+    id: string,
     name?: string,
     labels?: Map<Data_Label, Set<Data_Text>>,
     state: State
