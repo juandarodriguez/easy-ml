@@ -71,6 +71,11 @@ export interface IAppConfig {
         name: string;
     },
     scratch: {
-        url: string
-    } 
+        url: string,
+        domain: string
+    },
+    easyml: {
+        url: string,
+        domain: string
+    }
 }

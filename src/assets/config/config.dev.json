@@ -1,5 +1,13 @@
 {
+    "env": {
+        "name": "dev"
+    },
     "scratch": {
-        "url": "http://localhost:8601"
+        "url": "http://localhost:8601",
+        "domain": "http://localhost:8601"
+    },
+    "easyml": {
+        "url": "http://localhost:4200",
+        "domain": "http://localhost:4200"
     }
 }

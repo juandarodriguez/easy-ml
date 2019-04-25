@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as createHost from 'cross-domain-storage/host'
 import * as createGuest from 'cross-domain-storage/guest'
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +11,23 @@ export class CrossDomainStorageService {
   private storageHost;
   private storageGuest;
 
-  constructor() {
+  constructor(private configService: ConfigService) {
     if(this.storageHost) return;
 
+    let domainEasyml = ConfigService["settings"]["easyml"]["domain"];
+    let domainScratch = ConfigService["settings"]["scratch"]["domain"];
     this.storageHost = createHost([
       {
-        origin: 'http://localhost:8601',
+        origin: domainScratch,
         allowedMethods: ['get', 'set']
       },
       {
-        origin: 'http://localhost:4200',
+        origin: domainEasyml,
         allowedMethods: ['get', 'set']
       },
     ]);
 
-    this.storageGuest = createGuest("http://localhost:4200");
+    this.storageGuest = createGuest(domainEasyml);
 
   }
 

@@ -1,5 +1,13 @@
 {
+    "env": {
+        "name": "prod"
+    },
     "scratch": {
-        "url": "http://juandarodriguez.es/scratch"
+        "url": "http://scratch.juandarodriguez.es",
+        "domain": "http://scratch.juandarodriguez.es"
+    },
+    "easyml": {
+        "url": "http://easyml.juandarodriguez.es",
+        "domain": "http://easyml.juandarodriguez.es"
     }
 }
