@@ -1,0 +1,33 @@
+{
+    "contento": [
+        "que contento estoy",
+        "estoy contento",
+        "estoy alegre",
+        "que bueno",
+        "me encanta",
+        "es maravilloso",
+        "realmente bueno",
+        "estupendo",
+        "es lo mejor que me ha pasado",
+        "mejor imposible",
+        "soy feliz",
+        "que bien",
+        "me parece cojonudo",
+        null
+    ],
+    "triste": [
+        "estoy triste",
+        "todo me sale mal",
+        "estoy harto de todo",
+        "que coñazo",
+        "estoy fatal",
+        "es horrible",
+        "vaya tela",
+        "que jodienda",
+        "peor imposible",
+        "que hartura",
+        "me cago en todo",
+        "que depresion",
+        "estoy deprimido"
+    ]
+}

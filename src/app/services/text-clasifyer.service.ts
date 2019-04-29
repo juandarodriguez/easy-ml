@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
 import { ScratchManagerService } from './scratch-manager.service';
 import { CrossDomainStorageService } from './cross-domain-storage.service';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 
 export let configDefault: IConfiguration = {
@@ -32,7 +32,7 @@ export class TextClasifyerService {
     private scratchManager: ScratchManagerService,
     private storageService: CrossDomainStorageService
   ) {
-    
+
     this.model = {
       id: uuid(),
       name: "ponme un nombre",
@@ -69,7 +69,7 @@ export class TextClasifyerService {
       let texts = new Set<Data_Text>();
       this.model.labels.set(key, texts);
       for (let text of modelObj[key]) {
-        texts.add(text);
+        if (text) texts.add(text);
       }
     }
 
