@@ -17,7 +17,7 @@ export class MlModelToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.model = this.textClasifyerService.getModel();     
+    this.model = this.textClasifyerService.model;     
   }
 
   editModelName(){

@@ -31,7 +31,7 @@ export class MlConfigurationComponent implements OnInit {
   }
 
   update() {
-    this.textClasifyerService.configure(this.config);
+    this.textClasifyerService.setConfiguration(this.config);
     let trainObservable = this.textClasifyerService.train();
     this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
 
@@ -39,7 +39,7 @@ export class MlConfigurationComponent implements OnInit {
   reset() {
     this.config = this.jsonCopy(configDefault);
 
-    this.textClasifyerService.configure(this.config);
+    this.textClasifyerService.setConfiguration(this.config);
   }
 
 }

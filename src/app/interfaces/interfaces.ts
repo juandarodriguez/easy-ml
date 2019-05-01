@@ -52,7 +52,7 @@ export interface IRunResult {
 }
 
 export interface IEngine {
-    configure(c: IConfiguration): boolean,
+    setConfiguration(c: IConfiguration): boolean,
     modelToString(): string
 }
 

@@ -35,11 +35,12 @@ export class MlModelComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.model = this.textClasifyerService.getModel();
+    this.model = this.textClasifyerService.model;
   }
 
 
   loadModel() {
+    this.textClasifyerService.resetModel()
     this.fileElement.nativeElement.click();
   }
 

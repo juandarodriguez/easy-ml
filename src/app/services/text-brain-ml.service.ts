@@ -24,12 +24,13 @@ export class TextBrainMLService implements ITextEngine {
     return fun;
   }
   
-  configure(c: IConfiguration): boolean {
+  setConfiguration(c: IConfiguration): boolean {
     this.configuration = c;
     return true;
   }
 
   run(entry: Data_Text): IRunResult {
+    // Entry is vectorized as a Bag Of Word
     let term = this.bow.bow(entry, this.dict);
     let predict = this.net.run(term);
     let i = this.bow.maxarg(predict);
@@ -62,11 +63,6 @@ export class TextBrainMLService implements ITextEngine {
     let traindata = [];
     this.classes = {};
 
-    // extract array of text to build dictionary
-    // for(let i = 0; i < data.size; i++) {
-    //   texts.push(data[i].value);
-    //   _classes.add(data[i].label);
-    // }
     for (let d of data) {
       texts.push(d.text);
       _classes.add(d.label);
@@ -92,13 +88,25 @@ export class TextBrainMLService implements ITextEngine {
 
   train(model: ITextModel): Observable<any> {
 
-    let data = new Set<ITextData>();
+    let dataArray = [];
 
     for (let label of model.labels.keys()) {
       for (let text of model.labels.get(label)) {
-        data.add({ label: label, text: text })
+        dataArray.push({ label: label, text: text })
       }
     }
+
+    function shuffle(a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+  
+    shuffle(dataArray);
+
+    let data = new Set(dataArray);
 
     let { traindata, classes } = this.prepareTrainData(data);
 
