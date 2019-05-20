@@ -45,15 +45,17 @@ export class MlModelComponent implements OnInit {
   }
 
   onLoaded(e) {
-
     let file = e.target.files[0];
-    this.model.name = file.name.replace(/\.[^/.]+$/, "");
+    let modelName = file.name.replace(/\.[^/.]+$/, "");
+    this.model.name = modelName;
     let fileReader = new FileReader();
 
     fileReader.onload = (e) => {
       //console.log(fileReader.result);
-      this.textClasifyerService.load(fileReader.result.toString()).subscribe(model => {
+      this.textClasifyerService.load(fileReader.result.toString(), modelName).subscribe(model => {
+        
         this.model = model;
+        this.model.name = modelName;
         this.labels = new Set(model.labels.keys());
         this.texts = model.labels;
       });

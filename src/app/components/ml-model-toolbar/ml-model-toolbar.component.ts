@@ -14,10 +14,11 @@ export class MlModelToolbarComponent implements OnInit {
   @ViewChild("inputNameModel") inputNameModel: ElementRef;
 
   constructor(private textClasifyerService: TextClasifyerService) {
+    this.model = this.textClasifyerService.model;
   }
 
   ngOnInit() {
-    this.model = this.textClasifyerService.model;     
+        
   }
 
   editModelName(){

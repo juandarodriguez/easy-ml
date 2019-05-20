@@ -32,7 +32,12 @@ export class TextClasifyerService {
     private scratchManager: ScratchManagerService,
     private storageService: CrossDomainStorageService
   ) {
-    this.resetModel();
+    this.model = {
+      id: uuid(),
+      name: 'ponme un nombre',
+      labels: new Map<Data_Label, Set<Data_Text>>(),
+      state: State.EMPTY
+    };
   }
 
   getModel() {
@@ -40,12 +45,10 @@ export class TextClasifyerService {
   }
 
   resetModel() {
-    this.model = {
-      id: uuid(),
-      name: "ponme un nombre",
-      labels: new Map<Data_Label, Set<Data_Text>>(),
-      state: State.EMPTY
-    }
+    this.model.id = uuid();
+    this.model.name = 'ponme un nombre';
+    this.model.labels = new Map<Data_Label, Set<Data_Text>>();
+    this.model.state = State.EMPTY;
     this.textMLEngine.setConfiguration(this.configuration);
   }
 
@@ -53,7 +56,7 @@ export class TextClasifyerService {
    * Load a model from a JSON string representation
    * @param modelJSON 
    */
-  load(modelJSON: string): Observable<ITextModel> {
+  load(modelJSON: string, name = ''): Observable<ITextModel> {
 
     let modelObj = JSON.parse(modelJSON);
 
