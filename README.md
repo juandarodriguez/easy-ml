@@ -59,7 +59,9 @@ Se inicia la interfaz de scratch con los módulos scratch-vm y
 scratch-blocks, apuntando a las copias que acabamos de bajar.
 
 
+# El artículo en el que he basado la implementación del (primer) clasificador de textos
 
+https://medium.com/@tech_fort/classifying-text-with-neural-networks-and-mimir-in-javascript-94c9de20c0ac
 
 ## El código que me ha servido de modelo para el clasificado basado en red neuronal con bag of words
 
