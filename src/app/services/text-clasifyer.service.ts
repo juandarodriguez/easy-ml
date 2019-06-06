@@ -71,7 +71,6 @@ export class TextClasifyerService {
     this.model.state = State.UNTRAINED;
 
     return of(this.model);
-
   }
 
   /** 
