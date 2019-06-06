@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ITextModel, State, IConfiguration, Data_Text, Data_Label, ITextData, ITrainResult, IRunResult } from '../interfaces/interfaces';
 import { TextBrainMLService } from './text-brain-ml.service';
+import { TextMockMlService } from './text-mock-ml.service';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { saveAs } from 'file-saver';
@@ -28,7 +29,8 @@ export class TextClasifyerService {
   public trainResult: ITrainResult;
 
   constructor(
-    private textMLEngine: TextBrainMLService,
+    //private textMLEngine: TextBrainMLService,
+    private textMLEngine: TextMockMlService,
     private scratchManager: ScratchManagerService,
     private storageService: CrossDomainStorageService
   ) {
@@ -201,10 +203,6 @@ export class TextClasifyerService {
     let modelJSON = JSON.stringify(modelObject);
 
     return modelJSON;
-  }
-
-  getModelFuntionString() {
-    return this.textMLEngine.modelToString();
   }
 
   model2JSON() {

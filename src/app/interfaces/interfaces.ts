@@ -52,8 +52,7 @@ export interface IRunResult {
 }
 
 export interface IEngine {
-    setConfiguration(c: IConfiguration): boolean,
-    modelToString(): string
+    setConfiguration(c: IConfiguration): boolean
 }
 
 export interface ITextEngine extends IEngine {

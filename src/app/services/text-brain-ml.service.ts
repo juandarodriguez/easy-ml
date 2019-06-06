@@ -18,11 +18,6 @@ export class TextBrainMLService implements ITextEngine {
     this.net = new brain.NeuralNetwork();
   }
 
-  private toFunction() {
-    let fun = this.toFunction();
-    console.log(fun);
-    return fun;
-  }
   
   setConfiguration(c: IConfiguration): boolean {
     this.configuration = c;
@@ -120,15 +115,11 @@ export class TextBrainMLService implements ITextEngine {
     this.net = new brain.NeuralNetwork();
 
     let promise = this.net.trainAsync(ann_train, this.configuration)
-
+    console.log("#####");
+    console.log(promise);
+    console.log("###FIN###");
     return from(promise);
 
-  }
-
-  modelToString(): string {
-    let code = this.toFunction().toString();
-    console.log(code);
-    return code;
   }
 
   model2JSON(){
