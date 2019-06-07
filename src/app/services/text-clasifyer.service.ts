@@ -29,8 +29,8 @@ export class TextClasifyerService {
   public trainResult: ITrainResult;
 
   constructor(
-    //private textMLEngine: TextBrainMLService,
-    private textMLEngine: TextMockMlService,
+    private textMLEngine: TextBrainMLService,
+    //private textMLEngine: TextMockMlService,
     private scratchManager: ScratchManagerService,
     private storageService: CrossDomainStorageService
   ) {
