@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
+import { TextClassifierService } from '../../services/text-classifier.service';
 import { IRunResult } from '../../interfaces/interfaces';
 
 @Component({
@@ -14,14 +14,18 @@ export class MlTestModelComponent implements OnInit {
   result: IRunResult;
 
   constructor(
-    public textClasifyerService: TextClasifyerService,
+    public textClassifierService: TextClassifierService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
   }
 
+  getState(){
+    return this.textClassifierService.state;
+  }
+
   test(){
-    this.result = this.textClasifyerService.run(this.testText);
+    this.result = this.textClassifierService.run(this.testText);
     console.log(this.result);
     let sum = 0;
     this.result.prediction.forEach((v, k) => {

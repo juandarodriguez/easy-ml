@@ -6,19 +6,20 @@ export enum State {
     TRAINING = "TRAINING"
 }
 
-export type Data_Label = string
-export type Data_Text = string
+export type TLabel = string
+export type TText = string
 
-export interface ITextModel {
-    id: string,
-    name?: string,
-    labels?: Map<Data_Label, Set<Data_Text>>,
-    state: State
+export interface ILabeledText {
+    text: TText,
+    label: TLabel
 }
 
-export interface ITextData {
-    text: Data_Text,
-    label: Data_Label
+// Interface describing the input text with label which user provides
+// through GUI or file.
+export interface IInputFileLabeledTexts {
+    id: string,
+    name?: string,
+    labels?: Map<TLabel, Set<TText>>,
 }
 
 export enum Activation_Functions {
@@ -45,10 +46,10 @@ export interface IConfiguration {
 }
 
 export interface IRunResult {
-    text: Data_Text,
-    label: Data_Label,
+    text: TText,
+    label: TLabel,
     confidence: number,
-    prediction: Map<Data_Label, number>
+    prediction: Map<TLabel, number>
 }
 
 export interface IEngine {
@@ -56,8 +57,8 @@ export interface IEngine {
 }
 
 export interface ITextEngine extends IEngine {
-    run(entry: Data_Text): IRunResult,
-    train(model: ITextModel): any,
+    run(entry: TText): IRunResult,
+    train(traindata: ILabeledText[]): any,
 }
 
 export interface ITrainResult {

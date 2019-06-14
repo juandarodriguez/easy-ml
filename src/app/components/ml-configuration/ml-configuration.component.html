@@ -25,7 +25,7 @@
   </mat-card-content>
 
   <mat-card-actions>
-    <button [disabled]="model.state == 'EMPTY'" (click)="update()" mat-raised-button>Entrenar</button>
+    <button [disabled]="getState() == 'EMPTY'" (click)="update()" mat-raised-button>Entrenar</button>
     <button (click)="reset()" mat-raised-button>Restaurar</button>
   </mat-card-actions>
 

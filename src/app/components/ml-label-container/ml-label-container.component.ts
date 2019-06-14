@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { Data_Label, Data_Text, ITextModel } from 'src/app/interfaces/interfaces';
-import { TextClasifyerService } from 'src/app/services/text-clasifyer.service';
+import { TLabel, TText,ILabeledText } from 'src/app/interfaces/interfaces';
+import { TextClassifierService } from '../../services/text-classifier.service';
 import { ScratchManagerService } from '../../services/scratch-manager.service';
+import { InputLabeledTextManagerService } from '../../services/input-labeled-text-manager.service';
 
 export type DialogData = string;
 
@@ -14,12 +15,12 @@ export type DialogData = string;
 export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
-  @Input('label') label: Data_Label;
-  @Input('texts') texts:  Set<Data_Text>;
-  @Output() onChildDeleted = new EventEmitter<Data_Label>();
+  @Input('label') label: TLabel;
+  @Input('texts') texts:  Set<TText>;
+  @Output() onChildDeleted = new EventEmitter<TLabel>();
 
   constructor(
-    private textClasifyerService: TextClasifyerService,
+    private inputLabeledTextManager: InputLabeledTextManagerService,
     private scratchManager: ScratchManagerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar) {
@@ -40,17 +41,15 @@ export class MlLabelContainerComponent implements OnInit {
       console.log('The dialog was closed');
       // This is the first text to be added in the label set
       if(this.texts == undefined){
-        this.texts = new Set<Data_Text>();
+        this.texts = new Set<TText>();
       }
       this.texts.add(result);
-      this.textClasifyerService.addEntry({label: this.label, text: result});
+      this.inputLabeledTextManager.addEntry({label: this.label, text: result});
       this.scratchManager.modelUpdated = false;
       this.snackBar.open('Añadido texto',
         '', {
           duration: 2000,
         });
-
-      console.log(this.textClasifyerService.getModel());
     });
   }
 
@@ -63,15 +62,12 @@ export class MlLabelContainerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.texts.delete(result);
-      this.textClasifyerService.removeEntry({label: this.label , text:result})
+      this.inputLabeledTextManager.removeEntry({label: this.label , text:result})
       this.scratchManager.modelUpdated = false;
       this.snackBar.open('Eliminado texto',
         '', {
           duration: 2000,
         });
-
-      console.log(this.textClasifyerService.getModel());
-
     });
   }
 
@@ -83,15 +79,13 @@ export class MlLabelContainerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.textClasifyerService.removeLabel(result);
+      this.inputLabeledTextManager.removeLabel(result);
       this.onChildDeleted.emit(result);
 
       this.snackBar.open('Eliminada la etiqueta ' + result,
         this.label, {
           duration: 2000,
         });
-
-      console.log(this.textClasifyerService.getModel());
     });
   }
 

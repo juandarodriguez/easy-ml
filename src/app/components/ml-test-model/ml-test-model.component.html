@@ -25,7 +25,7 @@
   </mat-card-content>
   
   <mat-card-actions>
-    <button [disabled]="textClasifyerService.model.state != 'TRAINED'" (click)="test()" mat-raised-button>Comprobar</button>
+    <button [disabled]="getState() != 'TRAINED'" (click)="test()" mat-raised-button>Comprobar</button>
   </mat-card-actions>
 
 </mat-card>

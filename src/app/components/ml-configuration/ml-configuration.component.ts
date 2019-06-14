@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IConfiguration, ITextModel } from 'src/app/interfaces/interfaces';
-import { TextClasifyerService, configDefault } from 'src/app/services/text-clasifyer.service';
+import { IConfiguration, ILabeledText } from 'src/app/interfaces/interfaces';
+import { TextClassifierService, configDefault } from '../../services/text-classifier.service';
 import { MatSnackBar } from '@angular/material';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 
@@ -12,34 +12,37 @@ import { ShowProgressSpinnerService } from '../../services/show-progress-spinner
 export class MlConfigurationComponent implements OnInit {
 
   config: IConfiguration;
-  model: ITextModel;
+  traindatum: ILabeledText;
 
   jsonCopy(src) {
     return JSON.parse(JSON.stringify(src));
   }
 
   constructor(
-    private textClasifyerService: TextClasifyerService,
+    private textClassifierService: TextClassifierService,
     private snackBar: MatSnackBar,
     private progressSpinner: ShowProgressSpinnerService
     ) {
     this.config = this.jsonCopy(configDefault);
-    this.model = textClasifyerService.getModel();
+  }
+
+  getState(){
+    return this.textClassifierService.getState();
   }
 
   ngOnInit() {
   }
 
   update() {
-    this.textClasifyerService.setConfiguration(this.config);
-    let trainObservable = this.textClasifyerService.train();
+    this.textClassifierService.setConfiguration(this.config);
+    let trainObservable = this.textClassifierService.train();
     this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
 
   }
   reset() {
     this.config = this.jsonCopy(configDefault);
 
-    this.textClasifyerService.setConfiguration(this.config);
+    this.textClassifierService.setConfiguration(this.config);
   }
 
 }

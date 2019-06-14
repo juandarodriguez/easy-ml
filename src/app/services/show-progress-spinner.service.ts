@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { ProgressSpinnerDialogComponent } from '../components/progress-spinner-dialog/progress-spinner-dialog.component';
 import { Observable } from 'rxjs';
-import { TextClasifyerService } from './text-clasifyer.service';
+import { TextClassifierService } from './text-classifier.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class ShowProgressSpinnerService {
   response: string;
 
   constructor(
-    private textClasifiyerService: TextClasifyerService,
+    private textClasifiyerService: TextClassifierService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) { }

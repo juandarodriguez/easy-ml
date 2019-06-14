@@ -5,10 +5,10 @@
     <button (click)="loadModel()" mat-button>
       <mat-icon>input</mat-icon> Cargar modelo
     </button>
-    <button [disabled]="model.state == 'EMPTY'" (click)="saveModel()" mat-button>
+    <button [disabled]="getState() == 'EMPTY'" (click)="saveModel()" mat-button>
       <mat-icon>save</mat-icon> Guardar modelo
     </button>
-    <button [disabled]="model.state == 'EMPTY' || model.state == 'TRAINED'" (click)="trainModel()" mat-button>
+    <button [disabled]="getState() == 'EMPTY' || getState() == 'TRAINED'" (click)="trainModel()" mat-button>
       <mat-icon>perm_data_setting</mat-icon> Entrenar
     </button>
 
@@ -28,11 +28,11 @@
           Datos para el entrenamiento del modelo
         </mat-panel-title>
         <mat-panel-description>
-          Estado del modelo: {{model.state}}
-          <span style="margin-left:10px" *ngIf="model.state == 'TRAINED'">
+          Estado del modelo: {{getState()}}
+          <span style="margin-left:10px" *ngIf="getState() == 'TRAINED'">
             [
-            <b>error</b>: {{textClasifyerService.trainResult.error | number:'1.4-6'}}
-            <b>iterations</b>: {{textClasifyerService.trainResult.iterations}}]
+            <b>error</b>: {{textClassifierService.trainResult.error | number:'1.4-6'}}
+            <b>iterations</b>: {{textClassifierService.trainResult.iterations}}]
           </span>
         </mat-panel-description>
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TextClasifyerService } from './text-clasifyer.service';
+import { TextClassifierService } from './text-classifier.service';
 import { State } from '../interfaces/interfaces';
 import { ConfigService } from './config.service';
 
