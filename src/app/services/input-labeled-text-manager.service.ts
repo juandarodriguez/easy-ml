@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TLabel, ILabeledText } from '../interfaces/interfaces';
+import { TLabel, ILabeledText, TText } from '../interfaces/interfaces';
 import { saveAs } from 'file-saver';
 
 @Injectable({
@@ -7,16 +7,18 @@ import { saveAs } from 'file-saver';
 })
 export class InputLabeledTextManagerService {
 
-  private traindata: Set<ILabeledText>;
-  private labels: Set<TLabel>
-  private name: string;
+  labelsWithTexts: Map<TLabel, Set<TText>>;
+  labels: Set<TLabel>
+  name: string;
 
-  constructor() { }
+  constructor() { 
+    this.labelsWithTexts = new Map<TLabel, Set<TText>>();
+    this.labels = new Set<TLabel>();
+  }
 
   // Load input labeled text from file
   load(file: string) {
-    this.traindata = null;
-    
+
   }
 
   // Save input labeled data to disk
@@ -27,29 +29,39 @@ export class InputLabeledTextManagerService {
 
   addLabel(label: string) {
     // Add label only if not exits
-    if (!this.labels.has(label)){
+    if(label == "") return;
+    if (!this.labelsWithTexts.has(label)){
       this.labels.add(label);
+      this.labelsWithTexts.set(label, new Set<TText>());
     }
+    console.log(this.labelsWithTexts);
   }
 
   removeLabel(label: string){
     this.labels.delete(label);
+    this.labelsWithTexts.delete(label);
   }
 
   addEntry(entry: ILabeledText){
-    if(!this.traindata.has(entry)){
-      this.traindata.add(entry);
+    let label = entry.label;
+    let text = entry.text;
+    if(label == "" || text == "") return;
+    this.addLabel(label);
+    if(!this.labelsWithTexts.get(label).has(text)){
+      this.labelsWithTexts.get(label).add(text);
     }
-    
   }
 
   removeEntry(entry: ILabeledText){
-    this.traindata.delete(entry);
+    let label = entry.label;
+    let text = entry.text;
+    
+    this.labelsWithTexts.get(label).delete(text);
   }
 
   serializeModel(): string {
 
-    let inputJSONStr = JSON.stringify(this.traindata);
+    let inputJSONStr = JSON.stringify(this.labelsWithTexts);
 
     return inputJSONStr;
   }

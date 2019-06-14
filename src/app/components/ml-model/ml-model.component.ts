@@ -26,7 +26,7 @@ export class MlModelComponent implements OnInit {
   @ViewChild('fileElement') fileElement: ElementRef;
 
   constructor(
-    private inputLabeledTextManager: InputLabeledTextManagerService,
+    public inputLabeledTextManager: InputLabeledTextManagerService,
     private textClassifierService: TextClassifierService,
     private scratchManager: ScratchManagerService,
     private snackBar: MatSnackBar,
@@ -65,9 +65,10 @@ export class MlModelComponent implements OnInit {
   }
 
   train() {
-    this.textClassifierService.setTraindata(this.traindata)
-    let trainObservable = this.textClassifierService.train();
-    let d = this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
+    console.log(this.inputLabeledTextManager.labelsWithTexts);
+    //this.textClassifierService.setTraindata(this.traindata)
+    //let trainObservable = this.textClassifierService.train();
+    //let d = this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
   }
 
   addLabel() {
@@ -78,6 +79,7 @@ export class MlModelComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(label => {
       console.log('The dialog was closed');
+      if(label == "") return;
       this.inputLabeledTextManager.addLabel(label);
       this.snackBar.open('Añadida la etiqueta',
         '', {

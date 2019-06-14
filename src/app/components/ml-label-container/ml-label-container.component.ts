@@ -15,8 +15,8 @@ export type DialogData = string;
 export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
+  texts: Set<TText>;
   @Input('label') label: TLabel;
-  @Input('texts') texts:  Set<TText>;
   @Output() onChildDeleted = new EventEmitter<TLabel>();
 
   constructor(
@@ -24,11 +24,11 @@ export class MlLabelContainerComponent implements OnInit {
     private scratchManager: ScratchManagerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar) {
+      this.texts = new Set<TText>();
   }
 
   ngOnInit() { 
     console.log(this.label);
-    console.log(this.texts);
   }
 
   addTerm() {
@@ -39,10 +39,8 @@ export class MlLabelContainerComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      if(result == "") return;
       // This is the first text to be added in the label set
-      if(this.texts == undefined){
-        this.texts = new Set<TText>();
-      }
       this.texts.add(result);
       this.inputLabeledTextManager.addEntry({label: this.label, text: result});
       this.scratchManager.modelUpdated = false;
