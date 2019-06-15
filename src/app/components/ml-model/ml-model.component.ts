@@ -2,7 +2,7 @@ import { TLabel, ILabeledText, TText, ITrainResult, State } from 'src/app/interf
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { Observable, from } from 'rxjs';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-
+import { saveAs } from 'file-saver';
 import { TextClassifierService } from '../../services/text-classifier.service';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 import { ScratchManagerService } from '../../services/scratch-manager.service';
@@ -41,6 +41,12 @@ export class MlModelComponent implements OnInit {
 
   getState() {
     return this.textClassifierService.state;
+  }
+
+  save() {
+    console.log(this.inputLabeledTextManager.name);
+    const blob = new Blob([this.serializeModel()], { type: 'application/json' });
+    saveAs(blob, this.inputLabeledTextManager.name);
   }
 
   load() {
@@ -116,6 +122,20 @@ export class MlModelComponent implements OnInit {
   loadScratch() {
     this.scratchManager.load();
   }
+
+  serializeModel(): string {
+    let dataObject = {};
+
+    for (let label of this.inputLabeledTextManager.labelsWithTexts.keys()) {
+      dataObject[label] = [];
+      for (let text of this.inputLabeledTextManager.labelsWithTexts.get(label)) {
+        dataObject[label].push(text);
+      }
+    }
+    let dataJSON = JSON.stringify(dataObject);
+
+    return dataJSON;
+}
 
 }
 
