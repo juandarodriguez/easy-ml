@@ -43,7 +43,7 @@
         </button>
       </mat-action-row>
 
-      <app-ml-label-container *ngFor="let label of inputLabeledTextManager.labels" (onChildDeleted)="onDeleted($event)" [label]="label"></app-ml-label-container>
+      <app-ml-label-container *ngFor="let label of inputLabeledTextManager.labels" (onChildDeleted)="onDeleted($event)" [label]="label" [texts]="inputLabeledTextManager.labelsWithTexts.get(label)"></app-ml-label-container>
     
     </mat-expansion-panel>
   </mat-card-content>

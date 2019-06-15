@@ -17,12 +17,18 @@ export class ShowProgressSpinnerService {
     private snackBar: MatSnackBar
   ) { }
 
-  showProgressSpinnerUntilExecuted(observable: Observable<Object>) {
+  showProgressSpinnerUntilExecuted(observable: Observable<Object>,
+    text: string, image: string,
+    afterMessageTitle: string, afterMessage) {
 
     let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent>
       = this.dialog.open(ProgressSpinnerDialogComponent, {
         panelClass: 'transparent',
         disableClose: true,
+        data: {
+          text: text,
+          image: image
+        }
       });
 
     let subscription = observable.subscribe(
@@ -36,8 +42,8 @@ export class ShowProgressSpinnerService {
         }
 
 
-        this.snackBar.open('¡Modelo entrenado!',
-          'Ya pueedes usar tu nuevo modelo', {
+        this.snackBar.open(afterMessageTitle,
+          afterMessage, {
             duration: 2000,
           });
         dialogRef.close();

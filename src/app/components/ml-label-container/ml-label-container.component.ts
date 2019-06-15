@@ -15,7 +15,7 @@ export type DialogData = string;
 export class MlLabelContainerComponent implements OnInit {
 
   panelOpenState = true;
-  texts: Set<TText>;
+  @Input('texts') texts: Set<TText>;
   @Input('label') label: TLabel;
   @Output() onChildDeleted = new EventEmitter<TLabel>();
 

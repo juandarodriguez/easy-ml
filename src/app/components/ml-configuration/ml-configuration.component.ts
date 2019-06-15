@@ -22,11 +22,11 @@ export class MlConfigurationComponent implements OnInit {
     private textClassifierService: TextClassifierService,
     private snackBar: MatSnackBar,
     private progressSpinner: ShowProgressSpinnerService
-    ) {
+  ) {
     this.config = this.jsonCopy(configDefault);
   }
 
-  getState(){
+  getState() {
     return this.textClassifierService.getState();
   }
 
@@ -36,7 +36,10 @@ export class MlConfigurationComponent implements OnInit {
   update() {
     this.textClassifierService.setConfiguration(this.config);
     let trainObservable = this.textClassifierService.train();
-    this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
+    this.progressSpinner
+      .showProgressSpinnerUntilExecuted(trainObservable,
+        "Entrenando modelo", "assets/images/modern-times.gif",
+        "Modelo entrenado", "Ya puedes usar tu modelo");
 
   }
   reset() {

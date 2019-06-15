@@ -1,6 +1,6 @@
 import { TLabel, ILabeledText, TText, ITrainResult, State } from 'src/app/interfaces/interfaces';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 
 import { TextClassifierService } from '../../services/text-classifier.service';
@@ -36,14 +36,14 @@ export class MlModelComponent implements OnInit {
   }
 
   ngOnInit() {
-    
+
   }
 
-  getState(){
+  getState() {
     return this.textClassifierService.state;
   }
 
-  loadModel() {
+  load() {
     this.fileElement.nativeElement.click();
   }
 
@@ -52,12 +52,31 @@ export class MlModelComponent implements OnInit {
     let inputDataName = file.name.replace(/\.[^/.]+$/, "");
     let fileReader = new FileReader();
 
-    fileReader.onload = (e) => {
-      console.log(fileReader.result);
-      this.inputLabeledTextManager.load(fileReader.result.toString());
-    }
-
     fileReader.readAsText(file);
+
+    console.log("empieza");
+
+    let promise = new Promise((resolve, error) => {
+      fileReader.onload = (e) => {
+        console.log(fileReader.result);
+        this.inputLabeledTextManager.load(fileReader.result.toString());
+        resolve(true);
+      }
+    }).then(() => {
+      return true;
+    },
+      () => {
+        return false;
+      });
+
+    let loadObservable = from(promise);
+
+    let d = this
+      .progressSpinner
+      .showProgressSpinnerUntilExecuted(loadObservable,
+        "Cargando archivo", "assets/images/modern-times.gif",
+        "Fichero cargado", "");
+
   }
 
   saveInputLabeledTexts() {
@@ -79,7 +98,7 @@ export class MlModelComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(label => {
       console.log('The dialog was closed');
-      if(label == "") return;
+      if (label == "") return;
       this.inputLabeledTextManager.addLabel(label);
       this.snackBar.open('Añadida la etiqueta',
         '', {
@@ -112,7 +131,7 @@ export class MlAddLabelDialogComponent {
   close(event) {
     console.log(event);
   }
-  
+
   onNoClick(): void {
     this.dialogRef.close();
   }
