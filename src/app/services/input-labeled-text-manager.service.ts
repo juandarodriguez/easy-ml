@@ -14,6 +14,7 @@ export class InputLabeledTextManagerService {
   constructor() {
     this.labelsWithTexts = new Map<TLabel, Set<TText>>();
     this.labels = new Set<TLabel>();
+    this.name = "Sin nombre"
   }
 
   clear() {

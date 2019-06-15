@@ -12,11 +12,10 @@ export class MlModelToolbarComponent implements OnInit {
 
   name: string;
   labeledText: ILabeledText;
-  edit = false;
   @ViewChild("inputNameModel") inputNameModel: ElementRef;
 
   constructor(
-    private inputLabeledTextManager: InputLabeledTextManagerService,
+    public inputLabeledTextManager: InputLabeledTextManagerService,
     private textClassifierService: TextClassifierService) {
   }
 
@@ -28,20 +27,10 @@ export class MlModelToolbarComponent implements OnInit {
     return this.textClassifierService.getState();
   }
 
-  editModelName(){
-    this.edit = true;
-    setTimeout(() => {
-      this.inputNameModel.nativeElement.focus();
-    }, 0);
-
-    
-  }
-
   updateModelName(event){
     console.log(event);
     if(event.key=="Enter" || event.type=="blur"){
-      this.edit = false;
-    }
     
+    }
   }
 }

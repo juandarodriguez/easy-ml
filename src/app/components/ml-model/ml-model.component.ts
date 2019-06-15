@@ -50,6 +50,7 @@ export class MlModelComponent implements OnInit {
   onLoaded(e) {
     let file = e.target.files[0];
     let inputDataName = file.name.replace(/\.[^/.]+$/, "");
+    this.inputLabeledTextManager.name = inputDataName;
     let fileReader = new FileReader();
 
     fileReader.readAsText(file);
