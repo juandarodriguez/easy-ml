@@ -19,9 +19,7 @@ type DialogData = TLabel;
 export class MlModelComponent implements OnInit {
 
   panelOpenState = false;
-  traindata: Set<ILabeledText>;
   labels = new Set<TLabel>();
-  labelsWithTexts = new Map<TLabel, Set<Text>>();
   trainResult: ITrainResult;
   @ViewChild('fileElement') fileElement: ElementRef;
 
@@ -44,7 +42,6 @@ export class MlModelComponent implements OnInit {
   }
 
   save() {
-    console.log(this.inputLabeledTextManager.name);
     const blob = new Blob([this.serializeModel()], { type: 'application/json' });
     saveAs(blob, this.inputLabeledTextManager.name);
   }
@@ -92,9 +89,12 @@ export class MlModelComponent implements OnInit {
 
   train() {
     console.log(this.inputLabeledTextManager.labelsWithTexts);
-    //this.textClassifierService.setTraindata(this.traindata)
-    //let trainObservable = this.textClassifierService.train();
-    //let d = this.progressSpinner.showProgressSpinnerUntilExecuted(trainObservable);
+    this.textClassifierService.setTraindata(this.inputLabeledTextManager.labelsWithTexts)
+    let trainObservable = this.textClassifierService.train();
+    let d = this.progressSpinner
+      .showProgressSpinnerUntilExecuted(trainObservable,
+        "Entrenando el modelo", "assets/images/modern-times.gif",
+        "Modelo entrenado", "Ya puedes usar el modelo");
   }
 
   addLabel() {
@@ -135,7 +135,7 @@ export class MlModelComponent implements OnInit {
     let dataJSON = JSON.stringify(dataObject);
 
     return dataJSON;
-}
+  }
 
 }
 
