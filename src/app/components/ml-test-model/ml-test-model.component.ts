@@ -14,7 +14,7 @@ export class MlTestModelComponent implements OnInit {
   result: IRunResult;
 
   constructor(
-    public textClassifierService: TextClassifierService,
+    private textClassifierService: TextClassifierService,
     private snackBar: MatSnackBar) { }
 
   ngOnInit() {
@@ -28,9 +28,10 @@ export class MlTestModelComponent implements OnInit {
     this.result = this.textClassifierService.run(this.testText);
     console.log(this.result);
     let sum = 0;
-    this.result.prediction.forEach((v, k) => {
-      sum += v;
-    });
+    Object.keys(this.result.prediction).forEach(k => {
+      sum += this.result.prediction[k];
+    })
+    
     console.log(sum);
     // this.snackBar.open(this.result,
     // 'Resultado', {

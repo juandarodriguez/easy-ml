@@ -11,7 +11,7 @@ import * as BrainText from 'brain-text'
 
 export let configDefault: IConfiguration = {
   iterations: 3000, // the maximum times to iterate the training data
-  errorThresh: 0.06, // the acceptable error percentage from training data
+  errorThresh: 0.006, // the acceptable error percentage from training data
   log: true, // true to use console.log, when a function is supplied it is used
   logPeriod: 10, // iterations between logging out
   learningRate: 0.3, // multiply's against the input and the delta then adds to momentum
@@ -62,12 +62,7 @@ export class TextClassifierService {
    * @param text 
    */
   run(text: TText): IRunResult {
-    let r = {
-      text: "text",
-      label: "label",
-      confidence: 0.90,
-      prediction: new Map<TLabel, number>()
-    }
+    let r = this.brainText.run(text);
 
     return r;
   }
@@ -81,6 +76,6 @@ export class TextClassifierService {
   }
 
   getState() {
-
+    this.brainText.getState();
   }
 }
