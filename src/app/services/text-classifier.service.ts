@@ -11,7 +11,7 @@ import * as BrainText from 'brain-text'
 
 export let configDefault: IConfiguration = {
   iterations: 3000, // the maximum times to iterate the training data
-  errorThresh: 0.006, // the acceptable error percentage from training data
+  errorThresh: 0.005, // the acceptable error percentage from training data
   log: true, // true to use console.log, when a function is supplied it is used
   logPeriod: 10, // iterations between logging out
   learningRate: 0.3, // multiply's against the input and the delta then adds to momentum
@@ -23,18 +23,18 @@ export let configDefault: IConfiguration = {
 })
 export class TextClassifierService {
 
-  private configuration: IConfiguration = configDefault;
+  private configuration: IConfiguration;
   private brainText;
   private traindata: ILabeledText[];
   public trainResult: ITrainResult;
-  public state = State.EMPTY;
 
   constructor(
     private storageService: CrossDomainStorageService
   ) {
     this.traindata = [];
     this.brainText = new BrainText();
-    this.brainText.setConfiguration(configDefault);
+    this.configuration = configDefault;
+    this.brainText.setConfiguration(this.configuration);
   }
 
   setTraindata(labelsWithTexts: Map<TLabel, Set<TText>>) {
@@ -48,6 +48,13 @@ export class TextClassifierService {
     this.brainText.addData(this.traindata);
   }
 
+  addEntry(entry: ILabeledText){
+    this.brainText.addOneData(entry);
+  }
+
+  removeEntry(entry: ILabeledText){
+    this.brainText.removeData(entry);
+  }
 
   /** 
    * Train the model, update the state and set the localStorage "easyml_model"
@@ -67,15 +74,21 @@ export class TextClassifierService {
     return r;
   }
 
+  clear(){
+    this.brainText = new BrainText();
+    this.brainText.setConfiguration(this.configuration);
+  }
+
   getConfiguration(): IConfiguration {
     return this.configuration;
   }
 
   setConfiguration(config: IConfiguration) {
-    this.brainText.setConfiguration(config);
+    this.configuration = config;
+    this.brainText.setConfiguration(this.configuration);
   }
 
   getState() {
-    this.brainText.getState();
+    return this.brainText.getState();
   }
 }

@@ -21,6 +21,7 @@ export class MlLabelContainerComponent implements OnInit {
 
   constructor(
     private inputLabeledTextManager: InputLabeledTextManagerService,
+    private textClassifierService: TextClassifierService,
     private scratchManager: ScratchManagerService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar) {
@@ -42,7 +43,9 @@ export class MlLabelContainerComponent implements OnInit {
       if(result == "") return;
       // This is the first text to be added in the label set
       this.texts.add(result);
-      this.inputLabeledTextManager.addEntry({label: this.label, text: result});
+      let entry = {label: this.label, text: result};
+      this.inputLabeledTextManager.addEntry(entry);
+      this.textClassifierService.addEntry(entry);
       this.scratchManager.modelUpdated = false;
       this.snackBar.open('Añadido texto',
         '', {
@@ -60,7 +63,9 @@ export class MlLabelContainerComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.texts.delete(result);
-      this.inputLabeledTextManager.removeEntry({label: this.label , text:result})
+      let entry = {label: this.label , text:result};
+      this.inputLabeledTextManager.removeEntry(entry);
+      this.textClassifierService.removeEntry(entry);
       this.scratchManager.modelUpdated = false;
       this.snackBar.open('Eliminado texto',
         '', {

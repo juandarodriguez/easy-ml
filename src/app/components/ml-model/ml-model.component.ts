@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/
 import { Observable, from } from 'rxjs';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { saveAs } from 'file-saver';
-import { TextClassifierService } from '../../services/text-classifier.service';
+import { TextClassifierService, configDefault } from '../../services/text-classifier.service';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 import { ScratchManagerService } from '../../services/scratch-manager.service';
 import { CrossDomainStorageService } from '../../services/cross-domain-storage.service';
@@ -38,7 +38,7 @@ export class MlModelComponent implements OnInit {
   }
 
   getState() {
-    return this.textClassifierService.state;
+    return this.textClassifierService.getState();
   }
 
   save() {
@@ -48,6 +48,10 @@ export class MlModelComponent implements OnInit {
 
   load() {
     this.fileElement.nativeElement.click();
+  }
+
+  getConfig(){
+    return this.textClassifierService.getConfiguration();
   }
 
   onLoaded(e) {
@@ -64,6 +68,9 @@ export class MlModelComponent implements OnInit {
       fileReader.onload = (e) => {
         console.log(fileReader.result);
         this.inputLabeledTextManager.load(fileReader.result.toString());
+        // This creates a new model
+        this.textClassifierService.clear();
+        this.textClassifierService.setTraindata(this.inputLabeledTextManager.labelsWithTexts)
         resolve(true);
       }
     }).then(() => {
@@ -89,7 +96,7 @@ export class MlModelComponent implements OnInit {
 
   train() {
     console.log(this.inputLabeledTextManager.labelsWithTexts);
-    this.textClassifierService.setTraindata(this.inputLabeledTextManager.labelsWithTexts)
+    
     let trainObservable = this.textClassifierService.train();
     let d = this.progressSpinner
       .showProgressSpinnerUntilExecuted(trainObservable,

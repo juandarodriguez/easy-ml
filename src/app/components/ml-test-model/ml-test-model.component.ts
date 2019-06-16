@@ -21,7 +21,7 @@ export class MlTestModelComponent implements OnInit {
   }
 
   getState(){
-    return this.textClassifierService.state;
+    return this.textClassifierService.getState();
   }
 
   test(){
@@ -33,10 +33,6 @@ export class MlTestModelComponent implements OnInit {
     })
     
     console.log(sum);
-    // this.snackBar.open(this.result,
-    // 'Resultado', {
-    //   duration: 2000,
-    // });
   }
 
 }
