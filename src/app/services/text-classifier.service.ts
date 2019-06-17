@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { State, IConfiguration, TText, TLabel, ILabeledText, ITrainResult, IRunResult } from '../interfaces/interfaces';
 import { Observable, of, from } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { saveAs } from 'file-saver';
-import { ScratchManagerService } from './scratch-manager.service';
 import { CrossDomainStorageService } from './cross-domain-storage.service';
 import { v4 as uuid } from 'uuid';
 import * as BrainText from 'brain-text'
-
 
 export let configDefault: IConfiguration = {
   iterations: 3000, // the maximum times to iterate the training data
@@ -23,6 +19,7 @@ export let configDefault: IConfiguration = {
 })
 export class TextClassifierService {
 
+  private id: string;
   private configuration: IConfiguration;
   private brainText;
   private traindata: ILabeledText[];
@@ -40,19 +37,19 @@ export class TextClassifierService {
   setTraindata(labelsWithTexts: Map<TLabel, Set<TText>>) {
     this.traindata = [];
     console.log(this.brainText);
-    for(let label of labelsWithTexts){
-      for(let text of label["1"]){
-        this.traindata.push({label: label[0], text: text});
+    for (let label of labelsWithTexts) {
+      for (let text of label["1"]) {
+        this.traindata.push({ label: label[0], text: text });
       }
     }
     this.brainText.addData(this.traindata);
   }
 
-  addEntry(entry: ILabeledText){
+  addEntry(entry: ILabeledText) {
     this.brainText.addOneData(entry);
   }
 
-  removeEntry(entry: ILabeledText){
+  removeEntry(entry: ILabeledText) {
     this.brainText.removeData(entry);
   }
 
@@ -61,7 +58,14 @@ export class TextClassifierService {
    * in order to be shared with scratch
    */
   train(): Observable<any> {
-    return from(this.brainText.train());
+    return from(this.brainText.train().then((r) => {
+      this.id = uuid();
+      console.log('Updating model storage');
+      let model = this.toJSON();
+      this.storageService.set("easyml_model", model);
+      
+      return r;
+    }));
   }
 
   /**
@@ -74,7 +78,7 @@ export class TextClassifierService {
     return r;
   }
 
-  clear(){
+  clear() {
     this.brainText = new BrainText();
     this.brainText.setConfiguration(this.configuration);
   }
@@ -90,5 +94,13 @@ export class TextClassifierService {
 
   getState() {
     return this.brainText.getState();
+  }
+
+  toJSON() {
+    let m = {
+      id: this.id,
+      modelJSON: this.brainText.toJSON()
+    }
+    return JSON.stringify(m);
   }
 }

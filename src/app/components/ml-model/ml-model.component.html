@@ -5,10 +5,10 @@ config = {{getConfig().errorThresh}}
     <input hidden="true" type="file" #fileElement (change)="onLoaded($event)">
 
     <button (click)="load()" mat-button>
-      <mat-icon>input</mat-icon> Cargar modelo
+      <mat-icon>input</mat-icon> Cargar datos
     </button>
     <button [disabled]="getState() == 'EMPTY'"  (click)="save()" mat-button>
-      <mat-icon>save</mat-icon> Guardar modelo
+      <mat-icon>save</mat-icon> Guardar datos
     </button>
     <button [disabled]="getState() == 'EMPTY' || getState() == 'TRAINED'"  (click)="train()" mat-button>
       <mat-icon>perm_data_setting</mat-icon> Entrenar

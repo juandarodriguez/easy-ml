@@ -6,7 +6,6 @@ import { saveAs } from 'file-saver';
 import { TextClassifierService, configDefault } from '../../services/text-classifier.service';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 import { ScratchManagerService } from '../../services/scratch-manager.service';
-import { CrossDomainStorageService } from '../../services/cross-domain-storage.service';
 import { InputLabeledTextManagerService } from '../../services/input-labeled-text-manager.service';
 
 type DialogData = TLabel;
@@ -29,8 +28,7 @@ export class MlModelComponent implements OnInit {
     private scratchManager: ScratchManagerService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private progressSpinner: ShowProgressSpinnerService,
-    private cdls: CrossDomainStorageService) {
+    private progressSpinner: ShowProgressSpinnerService) {
   }
 
   ngOnInit() {
