@@ -1,7 +1,10 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-type DialogData = string;
+type DialogData = {
+  text: string,
+  image: string
+};
 
 @Component({
   selector: 'app-progress-spinner-dialog',
