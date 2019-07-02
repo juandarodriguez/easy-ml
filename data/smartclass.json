@@ -1,5 +1,5 @@
 {
-    "encender_lampara": [
+    "encender luz": [
         "que me tocan el culo ",
         "enciende la luz",
         "esto está muy oscuro",
@@ -11,7 +11,7 @@
         "necesito luz",
         "no hay suficiente luz"
     ],
-    "apagar_lampara": [
+    "apagar luz": [
         "apaga la luz",
         "apaga la lámpara",
         "hay demasiada luz",
@@ -24,7 +24,7 @@
         "prefiero la oscuridad",
         "veo muy bien"
     ],
-    "encender_ventilador": [
+    "encender ventilador": [
         "qué sofocón",
         "enciende el ventilador",
         "hace mucho calor",
@@ -39,7 +39,7 @@
         "me abraso",
         "que calor tan sofocante"
     ],
-    "apagar_ventilador": [
+    "apagar ventilador": [
         "estoy arrecío",
         "qué frío",
         "apaga el ventilador",
