@@ -83,7 +83,7 @@ export class MlModelComponent implements OnInit {
     let d = this
       .progressSpinner
       .showProgressSpinnerUntilExecuted(loadObservable,
-        "Cargando archivo", "assets/images/modern-times.gif",
+        "Cargando archivo", "assets/images/loading.gif",
         "Fichero cargado", "");
 
   }

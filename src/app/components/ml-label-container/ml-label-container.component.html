@@ -1,6 +1,6 @@
 <mat-card class="label-card">
   <mat-card-header>
-    <mat-card-title class="card-title"><i>{{ label }}</i></mat-card-title>
+    <mat-card-title class="card-title"><i>{{ label }} ({{texts.size}})</i></mat-card-title>
   </mat-card-header>
 
   <mat-card-content class="scrollable-content">
@@ -8,7 +8,7 @@
     <mat-action-list dense>
       <mat-list-item *ngFor="let item of texts" (click)="delete(item)" matTooltip="{{item}}">
         <p class="text-item" matline>
-          {{item}}
+          {{item}} 
         </p>
       </mat-list-item>
     </mat-action-list>
