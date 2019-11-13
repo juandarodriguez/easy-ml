@@ -1,0 +1,14 @@
+<div mat-dialog-content>
+    <p>Username</p>
+    <mat-form-field>
+      <input matInput cdkFocusInitial [(ngModel)]="data.username">
+    </mat-form-field>
+    <p>Password</p>
+    <mat-form-field>
+      <input type="password" matInput [(ngModel)]="data.password">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="data" (keyup.enter)="close($event)" cdkFocusInitial>Ok</button>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+  </div>

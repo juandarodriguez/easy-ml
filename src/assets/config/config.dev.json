@@ -2,6 +2,10 @@
     "env": {
         "name": "dev"
     },
+    "api": {
+        "url_base": "http://localhost:8000",
+        "path": "/projects/api/project"
+    },
     "scratch": {
         "url": "http://localhost:8601",
         "domain": "http://localhost:8601"

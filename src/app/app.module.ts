@@ -31,6 +31,8 @@ import { MlModelToolbarComponent } from './components/ml-model-toolbar/ml-model-
 import { ProgressSpinnerDialogComponent } from './components/progress-spinner-dialog/progress-spinner-dialog.component';
 import { ConfigService } from './services/config.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MlLoginComponent, MlFormLoginDialogComponent } from './components/ml-login/ml-login.component';
+import { AuthenticationService } from './services/authentication.service';
 
 
 export function initializeApp(appConfig: ConfigService){
@@ -50,13 +52,16 @@ export function initializeApp(appConfig: ConfigService){
     MlAddLabelDialogComponent,
     MlModelToolbarComponent,
     ProgressSpinnerDialogComponent,
+    MlLoginComponent,
+    MlFormLoginDialogComponent
   ],
   entryComponents: [
     MlLabelContainerComponent,
     MlLabelContainerDialogComponent,
     MlDeleteConfirmComponent,
     MlAddLabelDialogComponent,
-    ProgressSpinnerDialogComponent
+    ProgressSpinnerDialogComponent,
+    MlFormLoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +88,7 @@ export function initializeApp(appConfig: ConfigService){
   ],
   providers: [
     ConfigService,
+    AuthenticationService,
     { provide: APP_INITIALIZER,
       useFactory: initializeApp,
       deps: [ConfigService], multi: true }

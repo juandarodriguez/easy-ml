@@ -70,6 +70,10 @@ export interface IAppConfig {
     env: {
         name: string;
     },
+    api: {
+        url_base: string,
+        path: string
+    },
     scratch: {
         url: string,
         domain: string

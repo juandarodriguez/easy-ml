@@ -61,6 +61,7 @@ export class TextClassifierService {
     return from(this.brainText.train().then((r) => {
       this.id = uuid();
       console.log('Updating model storage');
+      console.log("aquí");
       let model = this.toJSON();
       this.storageService.set("easyml_model", model);
       

@@ -11,7 +11,7 @@ export class CrossDomainStorageService {
   private storageHost;
   private storageGuest;
 
-  constructor(private configService: ConfigService) {
+  constructor() {
     if(this.storageHost) return;
 
     let domainEasyml = ConfigService["settings"]["easyml"]["domain"];

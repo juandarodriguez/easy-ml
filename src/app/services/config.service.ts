@@ -7,6 +7,7 @@ import { IAppConfig } from '../interfaces/interfaces';
 export class ConfigService {
 
   static settings: IAppConfig;
+  
   constructor(private http: HttpClient) { }
   load() {
     const jsonFile = `assets/config/config.${environment.name}.json`;

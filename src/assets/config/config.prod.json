@@ -2,6 +2,10 @@
     "env": {
         "name": "prod"
     },
+    "api": {
+        "url_base": "http://localhost:8080",
+        "path": "/projects/api/project"
+    },
     "scratch": {
         "url": "http://scratch.juandarodriguez.es",
         "domain": "http://scratch.juandarodriguez.es"
