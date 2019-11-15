@@ -1,8 +1,9 @@
 <mat-toolbar class="mat-toolbar" color="primary">
   <span>Learning-ML</span>
   <span class="space"></span>
+  <app-ml-filemenu></app-ml-filemenu>
   <input style="width: 150px" matInput #inputNameModel (blur)="updateModelName($event)" class="model-name" [(ngModel)]="inputLabeledTextManager.name" />
-  
+  <span class="space"></span>
   <span class="fill-remaining-space"></span>
   <app-ml-login></app-ml-login>
 

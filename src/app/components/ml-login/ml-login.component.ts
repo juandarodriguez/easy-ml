@@ -11,12 +11,13 @@ import { User } from 'src/app/models/user.model';
 })
 export class MlLoginComponent implements OnInit {
 
-  isAuthenticated: Boolean = false;
+  username: string;
+
   constructor(
-    private authService: AuthenticationService,
+    public authService: AuthenticationService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar, ) {
-    this.isAuthenticated = authService.isAuthenticated();
+    private snackBar: MatSnackBar ) {
+    this.username = authService.getCurrentUsername();
   }
 
   ngOnInit() {
@@ -30,23 +31,37 @@ export class MlLoginComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(user => {
       console.log('The dialog was closed');
-      console.log(user);
-      if (user == "") return;
+      if (user == null) return;
+      let message = "";
 
       this.authService.login(user).subscribe(
         v => {
-          console.log(v);
+          this.username = v.username;
+          message =  'Ahora puedes guardar tus proyectos y compartirlos con la comunidad';
+          this.snackBar.open(message,
+            'Bienvenido', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
         },
         e => {
-          console.log("error");
-          console.log(e);
+          message = "El nombre de usuario o la contraseña son incorrectos";
+          this.snackBar.open(message,
+            'Error', {
+            duration: 3000,
+            verticalPosition: 'top'
+          });
         });
-
-      this.snackBar.open('Adeennnntro',
-        '', {
-        duration: 2000,
-      });
     });
+  }
+
+  openMyStuff(){
+    let token = this.authService.getCurrentToken();
+    window.location.href = 'http://localhost:8000/projects/home?token=' + token;
+  }
+  
+  logout(){
+    this.authService.logout();
   }
 }
 

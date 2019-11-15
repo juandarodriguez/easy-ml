@@ -1,0 +1,10 @@
+<button mat-button [matMenuTriggerFor]="menu">
+    
+    Archivo<mat-icon>expand_more</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="openMyStuff()">Nuevo</button>
+  <button mat-menu-item (click)="logout()" [disabled]="!authService.isAuthenticated">Guardar</button>
+  <button mat-menu-item (click)="logout()">Cargar datos desde tu ordenador</button>
+  <button mat-menu-item (click)="logout()">Guardar datos en tu ordenador</button>
+</mat-menu>

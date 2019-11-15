@@ -21,6 +21,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatChipsModule} from '@angular/material/chips'; 
 import {MatProgressBarModule} from '@angular/material/progress-bar'; 
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
+import { MatMenuModule } from '@angular/material';
 
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { MlModelComponent, MlAddLabelDialogComponent } from './components/ml-model/ml-model.component';
@@ -33,6 +34,7 @@ import { ConfigService } from './services/config.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MlLoginComponent, MlFormLoginDialogComponent } from './components/ml-login/ml-login.component';
 import { AuthenticationService } from './services/authentication.service';
+import { MlFilemenuComponent } from './components/ml-filemenu/ml-filemenu.component';
 
 
 export function initializeApp(appConfig: ConfigService){
@@ -53,7 +55,8 @@ export function initializeApp(appConfig: ConfigService){
     MlModelToolbarComponent,
     ProgressSpinnerDialogComponent,
     MlLoginComponent,
-    MlFormLoginDialogComponent
+    MlFormLoginDialogComponent,
+    MlFilemenuComponent
   ],
   entryComponents: [
     MlLabelContainerComponent,
@@ -84,7 +87,9 @@ export function initializeApp(appConfig: ConfigService){
     MatIconModule,
     MatChipsModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule
+    
   ],
   providers: [
     ConfigService,

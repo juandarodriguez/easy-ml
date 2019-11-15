@@ -1,5 +1,13 @@
-<button *ngIf="!isAuthenticated" (click)="showLoginForm()" mat-button>
-  <mat-icon>person</mat-icon> Login
+<button *ngIf="!authService.isAuthenticated" (click)="showLoginForm()" mat-button>
+    <mat-icon>person</mat-icon> Iniciar sesión
 </button>
-<p *ngIf="isAuthenticated">juanda</p>
+<button *ngIf="authService.isAuthenticated" mat-button [matMenuTriggerFor]="menu">
+    
+    {{username}}<mat-icon>expand_more</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="openMyStuff()">Mis cosas</button>
+  <button mat-menu-item (click)="logout()">Cerrar sesión</button>
+</mat-menu>
+
 
