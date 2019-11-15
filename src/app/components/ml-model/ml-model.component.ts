@@ -1,8 +1,6 @@
 import { TLabel, ILabeledText, TText, ITrainResult, State } from 'src/app/interfaces/interfaces';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-import { Observable, from } from 'rxjs';
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
-import { saveAs } from 'file-saver';
 import { TextClassifierService, configDefault } from '../../services/text-classifier.service';
 import { ShowProgressSpinnerService } from '../../services/show-progress-spinner.service';
 import { ScratchManagerService } from '../../services/scratch-manager.service';
@@ -39,54 +37,10 @@ export class MlModelComponent implements OnInit {
     return this.textClassifierService.getState();
   }
 
-  save() {
-    const blob = new Blob([this.serializeModel()], { type: 'application/json' });
-    saveAs(blob, this.inputLabeledTextManager.name);
-  }
-
-  load() {
-    this.fileElement.nativeElement.click();
-  }
-
   getConfig(){
     return this.textClassifierService.getConfiguration();
   }
 
-  onLoaded(e) {
-    let file = e.target.files[0];
-    let inputDataName = file.name.replace(/\.[^/.]+$/, "");
-    this.inputLabeledTextManager.name = inputDataName;
-    let fileReader = new FileReader();
-
-    fileReader.readAsText(file);
-
-    console.log("empieza");
-
-    let promise = new Promise((resolve, error) => {
-      fileReader.onload = (e) => {
-        console.log(fileReader.result);
-        this.inputLabeledTextManager.load(fileReader.result.toString());
-        // This creates a new model
-        this.textClassifierService.clear();
-        this.textClassifierService.setTraindata(this.inputLabeledTextManager.labelsWithTexts)
-        resolve(true);
-      }
-    }).then(() => {
-      return true;
-    },
-      () => {
-        return false;
-      });
-
-    let loadObservable = from(promise);
-
-    let d = this
-      .progressSpinner
-      .showProgressSpinnerUntilExecuted(loadObservable,
-        "Cargando archivo", "assets/images/loading.gif",
-        "Fichero cargado", "");
-
-  }
 
   saveInputLabeledTexts() {
     this.inputLabeledTextManager.save();
@@ -126,20 +80,6 @@ export class MlModelComponent implements OnInit {
 
   loadScratch() {
     this.scratchManager.load();
-  }
-
-  serializeModel(): string {
-    let dataObject = {};
-
-    for (let label of this.inputLabeledTextManager.labelsWithTexts.keys()) {
-      dataObject[label] = [];
-      for (let text of this.inputLabeledTextManager.labelsWithTexts.get(label)) {
-        dataObject[label].push(text);
-      }
-    }
-    let dataJSON = JSON.stringify(dataObject);
-
-    return dataJSON;
   }
 
 }
